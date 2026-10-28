@@ -96,6 +96,11 @@ section .sub { text-align: center; color: var(--muted); max-width: 640px; margin
 .plan h3 { margin: 0; font-size: 20px; }
 .price { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
 .price small { font-size: 15px; font-weight: 500; color: var(--muted); }
+.was { display: flex; align-items: center; gap: 8px; margin-top: -8px; font-size: 15px; color: var(--muted); }
+.was s { text-decoration-thickness: 2px; }
+.off { white-space: nowrap; font-size: 12px; font-weight: 700; color: var(--accent-ink); background: var(--warn); border-radius: 6px; padding: 2px 8px; }
+.sub-name { margin: -10px 0 0; font-size: 14px; color: var(--muted); min-height: 3em; }
+@media (max-width: 560px) { .sub-name { min-height: 0; } }
 .plan ul { list-style: none; margin: 0; padding: 0; flex: 1; }
 .plan li { padding: 6px 0 6px 26px; position: relative; font-size: 15px; border-bottom: 1px dashed var(--line); }
 .plan li:last-child { border-bottom: none; }
@@ -168,7 +173,7 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
   <div class="hero wrap">
     <span class="tag">App cho Windows · Dùng thử 10 bài miễn phí</span>
     <h1>Làm cover AI <em>hàng trăm bài</em> trên Suno mà không phải ngồi bấm tay</h1>
-    <p class="lead">Thả nhạc hoặc dán link YouTube. App tự làm chậm, tự đăng lên Suno, tự chỉnh tempo và tải WAV về máy. Bạn chỉ việc chọn bài hay nhất.</p>
+    <p class="lead">Chọn cả thư mục chứa nhạc hoặc dán hàng loạt link YouTube. App tự động xử lý và đăng tải lên Suno, bạn chỉ việc chọn bài hay nhất. Sau đó tải WAV về máy, tải hàng loạt từ gói Chuyên nghiệp.</p>
     <div class="cta">
       <a class="btn pri big" href="#tai-ve" data-download>⬇ Tải về dùng thử</a>
       <a class="btn big" href="#bang-gia">Xem bảng giá</a>
@@ -227,7 +232,7 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
       <h2>Mọi thứ cần cho một xưởng cover</h2>
       <p class="sub">&nbsp;</p>
       <div class="feats">
-        <div class="card"><b>⚡ Chạy song song</b><span>Tới 15 bài cùng lúc trên Suno (gói Mức 3).</span></div>
+        <div class="card"><b>⚡ Chạy song song</b><span>Tới 15 bài cùng lúc trên Suno (gói Xưởng).</span></div>
         <div class="card"><b>🎵 Nguồn nhạc linh hoạt</b><span>File trong máy, cả thư mục, link YouTube và playlist.</span></div>
         <div class="card"><b>📝 Tự tìm lời</b><span>Lấy lời từ Hợp Âm Việt, sắp xếp đúng cấu trúc cho Suno.</span></div>
         <div class="card"><b>⬇ Tải WAV hàng loạt</b><span>Tích chọn nhiều bài, tải một lần, lọc theo bài đã thích.</span></div>
@@ -243,7 +248,8 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
       <h2>Bảng giá</h2>
       <p class="sub">Dùng thử miễn phí trước. Mua gói chỉ mất 1 phút: quét QR chuyển khoản, key hiện ra ngay.</p>
       <div class="plans" id="plans"></div>
-      <div class="price-note">Credit Suno do Suno tính riêng trên tài khoản của bạn. Đã có key? Gia hạn bằng nút "Gia hạn key" bên dưới.<br>
+      <div class="price-note"><b>Giá ra mắt</b>: giá gạch ngang là giá thường sẽ áp dụng sau giai đoạn ra mắt. Gia hạn các tháng sau theo giá hiện hành.<br>
+        Credit Suno do Suno tính riêng trên tài khoản của bạn. Đã có key? Gia hạn bằng nút bên dưới.<br>
         <button class="btn" style="margin-top:12px" onclick="checkout('', true)">Gia hạn key</button></div>
     </div>
   </section>
@@ -256,7 +262,7 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
         <details><summary>Máy tôi cần gì để chạy?</summary><p>Máy tính Windows 10/11 64-bit, đã cài Google Chrome, có mạng ổn định, và một tài khoản Suno. Bản Mac sẽ có sau.</p></details>
         <details><summary>Bản miễn phí có giới hạn gì?</summary><p>Đủ mọi tính năng, làm được 10 bài, mỗi lúc 2 bài trên Suno. Đủ để bạn thấy app làm được gì trước khi mua.</p></details>
         <details><summary>Mua xong nhận key thế nào?</summary><p>Quét QR chuyển khoản đúng số tiền và nội dung. Hệ thống tự nhận tiền, key hiện ra ngay trên trang (thường dưới 1 phút). Mở app › Cài đặt › nhập key là xong.</p></details>
-        <details><summary>Một key dùng được mấy máy?</summary><p>Mức 1 và Mức 2: 1 máy. Mức 3: 2 máy. Đổi máy thì bấm "Gỡ key khỏi máy này" trên máy cũ rồi nhập key ở máy mới.</p></details>
+        <details><summary>Một key dùng được mấy máy?</summary><p>Gói Cá nhân và Chuyên nghiệp: 1 máy. Gói Xưởng: 2 máy. Đổi máy thì bấm "Gỡ key khỏi máy này" trên máy cũ rồi nhập key ở máy mới.</p></details>
         <details><summary>Hết tháng thì sao?</summary><p>App về gói Miễn phí, dự án và file của bạn vẫn còn nguyên. Gia hạn bằng key cũ là app tự mở lại gói, không cần cài lại.</p></details>
         <details><summary>App có làm mất credit Suno của tôi không?</summary><p>App chỉ làm những việc bạn vẫn làm tay (đăng file, chỉnh tempo, lưu, tải WAV). Phần tạo bài cover bạn vẫn tự bấm trên Suno.</p></details>
         <details><summary>Windows báo "Windows protected your PC" khi cài?</summary><p>Đây là cảnh báo thường gặp với app mới. Bấm "More info" rồi "Run anyway" để cài.</p></details>
@@ -293,10 +299,11 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
 const CONFIG = {
   shopApi: 'https://xoqzxbqxctxjdnymbaep.supabase.co/functions/v1/shop',
   downloadUrl: 'https://github.com/cuccutmauxanh/xuong-cover-ai/releases/latest/download/XuongCoverAI-Setup.exe',
-  zalo: '',                   // số Zalo hỗ trợ, ví dụ '0912345678'
+  zalo: '0943242867',         // số điện thoại / Zalo hỗ trợ
   hot: 'pro',                 // gói gắn nhãn "Được chọn nhiều nhất"
 };
 // Tính năng từng gói: giống src/plans.js của app.
+const WHO = { basic: 'Cho người làm cover một mình', pro: 'Cho người làm cover nhiều, mỗi ngày', max: 'Cho xưởng làm số lượng lớn' };
 const FEATS = {
   basic: [['3 bài chạy cùng lúc', 1], ['Không giới hạn số bài', 1], ['Tải WAV từng bài', 1], ['Link playlist YouTube', 0], ['Tự tìm lời bài hát', 0], ['Tải WAV hàng loạt', 0]],
   pro: [['8 bài chạy cùng lúc', 1], ['Không giới hạn số bài', 1], ['Tải WAV 3 bài cùng lúc', 1], ['Link playlist YouTube', 1], ['Tự tìm lời bài hát', 1], ['Tải WAV hàng loạt', 1]],
@@ -314,13 +321,19 @@ const api = async (body) => {
 let prices = [];
 
 function drawPlans() {
-  const free = `<div class="card plan"><h3>Miễn phí</h3><div class="price">0đ</div>
+  const free = `<div class="card plan"><h3>Dùng thử</h3><p class="sub-name">Xem app làm được gì trước khi mua</p><div class="price">0đ</div>
     <ul><li>10 bài</li><li>2 bài chạy cùng lúc</li><li>Đủ mọi tính năng</li></ul>
     <a class="btn" href="#tai-ve">Tải về dùng thử</a></div>`;
-  const paid = prices.map((p) => `<div class="card plan${p.tier === CONFIG.hot ? ' hot' : ''}"><h3>${esc(p.name)}</h3>
+  const paid = prices.map((p) => {
+    const sale = p.list_amount > p.amount;
+    const off = sale ? Math.round((1 - p.amount / p.list_amount) * 100) : 0;
+    return `<div class="card plan${p.tier === CONFIG.hot ? ' hot' : ''}"><h3>${esc(p.name)}</h3>
+    <p class="sub-name">${esc(WHO[p.tier] || '')}</p>
     <div class="price">${vnd(p.amount)}<small>/tháng</small></div>
+    ${sale ? `<div class="was"><s>${vnd(p.list_amount)}</s><span class="off">Ra mắt −${off}%</span></div>` : ''}
     <ul>${(FEATS[p.tier] || []).map(([t, on]) => `<li class="${on ? '' : 'no'}">${t}</li>`).join('')}</ul>
-    <button class="btn ${p.tier === CONFIG.hot ? 'pri' : ''}" onclick="checkout('${p.tier}')">Mua ${esc(p.name)}</button></div>`).join('');
+    <button class="btn ${p.tier === CONFIG.hot ? 'pri' : ''}" onclick="checkout('${p.tier}')">Mua ${esc(p.name)}</button></div>`;
+  }).join('');
   $('#plans').innerHTML = free + (paid || '<div class="card plan muted">Đang tải bảng giá…</div>');
 }
 
@@ -368,7 +381,7 @@ function showPay(o, renew) {
       ${row('Nội dung', o.code, o.code)}
     </div>
     <div class="wait" id="pWait"><span class="spin"></span>Đang chờ tiền về… (tự cập nhật)</div>
-    <div class="muted" style="font-size:13px;text-align:center;margin-top:10px">Giữ trang này mở. Ghi nhớ mã đơn <b>${esc(o.code)}</b> nếu cần hỗ trợ.</div>`;
+    <div class="muted" style="font-size:13px;text-align:center;margin-top:10px">Giữ trang này mở. Ghi nhớ mã đơn <b>${esc(o.code)}</b> nếu cần hỗ trợ.${CONFIG.zalo ? ` Gọi hoặc nhắn Zalo <b>${pretty(esc(CONFIG.zalo))}</b>.` : ''}</div>`;
   clearInterval(poll);
   const started = Date.now();
   poll = setInterval(async () => {
@@ -402,7 +415,8 @@ for (const a of document.querySelectorAll('[data-download]')) {
   if (CONFIG.downloadUrl && !phone) { a.href = CONFIG.downloadUrl; a.removeAttribute('target'); } else a.href = '#tai-ve';
 }
 if (!phone) $('#dlNote').textContent = CONFIG.downloadUrl ? 'Windows 10/11 · 64-bit · cần Google Chrome' : 'Bộ cài sắp có. Hãy quay lại sau.';
-if (CONFIG.zalo) $('#contact').innerHTML = `Hỗ trợ qua Zalo: <a href="https://zalo.me/${esc(CONFIG.zalo)}">${esc(CONFIG.zalo)}</a>`;
+const pretty = (n) => n.replace(/^(\d{4})(\d{3})(\d{3})$/, '$1 $2 $3');
+if (CONFIG.zalo) $('#contact').innerHTML = `Hỗ trợ: gọi <a href="tel:${esc(CONFIG.zalo)}">${pretty(esc(CONFIG.zalo))}</a> hoặc nhắn <a href="https://zalo.me/${esc(CONFIG.zalo)}">Zalo</a>`;
 
 drawPlans();
 api({ action: 'prices' }).then((r) => { if (r.ok) { prices = r.prices; drawPlans(); } }).catch(() => {});
