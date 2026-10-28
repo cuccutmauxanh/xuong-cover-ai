@@ -99,6 +99,9 @@ section .sub { text-align: center; color: var(--muted); max-width: 640px; margin
 .was { display: flex; align-items: center; gap: 8px; margin-top: -8px; font-size: 15px; color: var(--muted); }
 .was s { text-decoration-thickness: 2px; }
 .off { white-space: nowrap; font-size: 12px; font-weight: 700; color: var(--accent-ink); background: var(--warn); border-radius: 6px; padding: 2px 8px; }
+.quote { font-size: 14px; margin: -6px 0 4px; }
+.quote.good { color: var(--accent); }
+.quote.bad { color: var(--danger); }
 .sub-name { margin: -10px 0 0; font-size: 14px; color: var(--muted); min-height: 3em; }
 @media (max-width: 560px) { .sub-name { min-height: 0; } }
 .plan ul { list-style: none; margin: 0; padding: 0; flex: 1; }
@@ -248,7 +251,7 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
       <h2>Bảng giá</h2>
       <p class="sub">Dùng thử miễn phí trước. Mua gói chỉ mất 1 phút: quét QR chuyển khoản, key hiện ra ngay.</p>
       <div class="plans" id="plans"></div>
-      <div class="price-note"><b>Giá ra mắt</b>: giá gạch ngang là giá thường sẽ áp dụng sau giai đoạn ra mắt. Gia hạn các tháng sau theo giá hiện hành.<br>
+      <div class="price-note"><b>Giá ra mắt</b>: giá gạch ngang là giá thường sẽ áp dụng sau giai đoạn ra mắt. <b>Mua trong giai đoạn ra mắt, bạn giữ giá này mỗi lần gia hạn</b> (cùng gói), dù sau này giá bán tăng.<br>
         Credit Suno do Suno tính riêng trên tài khoản của bạn. Đã có key? Gia hạn bằng nút bên dưới.<br>
         <button class="btn" style="margin-top:12px" onclick="checkout('', true)">Gia hạn key</button></div>
     </div>
@@ -263,7 +266,7 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
         <details><summary>Bản miễn phí có giới hạn gì?</summary><p>Đủ mọi tính năng, làm được 10 bài, mỗi lúc 2 bài trên Suno. Đủ để bạn thấy app làm được gì trước khi mua.</p></details>
         <details><summary>Mua xong nhận key thế nào?</summary><p>Quét QR chuyển khoản đúng số tiền và nội dung. Hệ thống tự nhận tiền, key hiện ra ngay trên trang (thường dưới 1 phút). Mở app › Cài đặt › nhập key là xong.</p></details>
         <details><summary>Một key dùng được mấy máy?</summary><p>Gói Cá nhân và Chuyên nghiệp: 1 máy. Gói Xưởng: 2 máy. Đổi máy thì bấm "Gỡ key khỏi máy này" trên máy cũ rồi nhập key ở máy mới.</p></details>
-        <details><summary>Hết tháng thì sao?</summary><p>App về gói Miễn phí, dự án và file của bạn vẫn còn nguyên. Gia hạn bằng key cũ là app tự mở lại gói, không cần cài lại.</p></details>
+        <details><summary>Hết tháng thì sao?</summary><p>App về gói Miễn phí, dự án và file của bạn vẫn còn nguyên. Gia hạn bằng key cũ là app tự mở lại gói, không cần cài lại. Khách mua giá ra mắt giữ nguyên giá khi gia hạn cùng gói.</p></details>
         <details><summary>App có làm mất credit Suno của tôi không?</summary><p>App chỉ làm những việc bạn vẫn làm tay (đăng file, chỉnh tempo, lưu, tải WAV). Phần tạo bài cover bạn vẫn tự bấm trên Suno.</p></details>
         <details><summary>Windows báo "Windows protected your PC" khi cài?</summary><p>Đây là cảnh báo thường gặp với app mới. Bấm "More info" rồi "Run anyway" để cài.</p></details>
       </div>
@@ -349,12 +352,32 @@ function checkout(tier, renew = false) {
   $('#box').innerHTML = `<button class="x" onclick="closeBox()" aria-label="Đóng">×</button>
     <h3>${renew ? 'Gia hạn key' : 'Mua gói'}</h3><div class="muted" style="font-size:14px">Thanh toán 1 tháng bằng chuyển khoản ngân hàng (quét QR).</div>
     <label class="field">Gói<select id="cTier">${prices.map((p) => `<option value="${p.tier}"${p.tier === tier ? ' selected' : ''}>${esc(p.name)} · ${vnd(p.amount)}/tháng</option>`).join('')}</select></label>
-    ${renew ? '<label class="field">Key đang dùng<input id="cKey" placeholder="XCA-XXXX-XXXX-XXXX-XXXX" autocomplete="off"></label>' : ''}
+    ${renew ? '<label class="field">Key đang dùng<input id="cKey" placeholder="XCA-XXXX-XXXX-XXXX-XXXX" autocomplete="off"></label><div class="quote" id="cQuote"></div>' : ''}
     <label class="field">Tên của bạn<input id="cName" autocomplete="name"></label>
     <label class="field">Số điện thoại / Zalo (hoặc email)<input id="cContact" autocomplete="tel" inputmode="tel"></label>
     <div class="err" id="cErr"></div>
     <button class="btn pri big" style="width:100%" id="cGo">Tạo mã QR thanh toán</button>`;
   $('#ov').classList.add('on');
+  if (renew) { // the price of THIS key: a launch buyer keeps the launch price
+    let seq = 0, picked = false; // picked: the customer chose a plan by hand, so it is not changed for them
+    const quote = async () => {
+      const key = $('#cKey').value.trim(), box = $('#cQuote'), mine = ++seq;
+      box.className = 'quote';
+      if (!/^XCA/i.test(key) || key.replace(/[^A-Za-z0-9]/g, '').length < 12) { box.textContent = ''; return; }
+      try {
+        const q = await api({ action: 'quote', key, tier: $('#cTier').value });
+        if (mine !== seq) return;
+        if (!q.ok) { box.className = 'quote bad'; box.textContent = q.error; return; }
+        if (!picked && q.plan && $('#cTier').value !== q.plan) { $('#cTier').value = q.plan; return quote(); } // renew the plan the key has
+        box.className = 'quote good';
+        box.innerHTML = q.locked && q.amount < q.current
+          ? `Giá gia hạn của bạn: <b>${vnd(q.amount)}/tháng</b> (giữ giá ra mắt, giá hiện tại ${vnd(q.current)})`
+          : `Giá gia hạn: <b>${vnd(q.amount)}/tháng</b>`;
+      } catch { /* the order step says it again */ }
+    };
+    $('#cKey').addEventListener('input', quote);
+    $('#cTier').addEventListener('change', () => { picked = true; quote(); });
+  }
   $('#cGo').onclick = async () => {
     const body = { action: 'order', tier: $('#cTier').value, customer: $('#cName').value, contact: $('#cContact').value, renewKey: renew ? $('#cKey').value : '' };
     if (renew && !/^XCA/i.test(body.renewKey.trim())) { $('#cErr').textContent = 'Hãy nhập key đang dùng (bắt đầu bằng XCA).'; return; }
