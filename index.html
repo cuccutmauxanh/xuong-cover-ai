@@ -13,120 +13,138 @@
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='3' y='3' width='58' height='58' rx='15' fill='%231b1e24' stroke='%233ec9a7' stroke-width='3.5'/><path d='M15.6 26.5v11M20.6 22.3v19.6M25.6 17.9v28.3M30.6 22.9v18.3M37.5 16v32.1M44.4 21v22.1M51.2 25.4v13.3' stroke='%233ec9a7' stroke-width='3.4' stroke-linecap='round'/></svg>">
+<meta name="theme-color" content="#000000">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect x='3' y='3' width='58' height='58' rx='15' fill='%231b1e24' stroke='%2345e1bb' stroke-width='3.5'/><path d='M15.6 26.5v11M20.6 22.3v19.6M25.6 17.9v28.3M30.6 22.9v18.3M37.5 16v32.1M44.4 21v22.1M51.2 25.4v13.3' stroke='%2345e1bb' stroke-width='3.4' stroke-linecap='round'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400..800&display=swap">
 <style>
+/* Style theo recordly.dev: nền đen tuyền, chữ trắng, chữ phụ xám #858585, thẻ xám đậm bo 12px,
+   video quay màn hình làm hình minh hoạ. Màu nhấn là xanh ngọc của nút "Tải về dùng thử". */
 :root {
-  --bg: #0e1013; --card: #171a1f; --card2: #1d2128; --line: #2a2e37; --text: #eef0f3; --muted: #969ca7;
-  --accent: #3ec9a7; --accent-ink: #06150f; --accent-bg: rgba(62, 201, 167, .12); --warn: #f5b942; --danger: #ff6b6b;
+  --bg: #000; --card: #121212; --card2: #1a1a1a; --line: #262626; --text: #fff; --muted: #858585;
+  --accent: #45e1bb; --accent-ink: #071811; --accent-bg: rgba(69, 225, 187, .1); --warn: #f5b942; --danger: #ff6b6b;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 "Be Vietnam Pro", system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.5 Inter, system-ui, sans-serif; font-optical-sizing: auto; -webkit-font-smoothing: antialiased; }
 a { color: var(--accent); }
 img { max-width: 100%; }
-.wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px; }
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 1px solid var(--line); border-radius: 12px; padding: 12px 20px;
-  font: inherit; font-weight: 600; color: var(--text); background: var(--card); cursor: pointer; text-decoration: none; transition: transform .1s, filter .15s; }
-.btn:hover { filter: brightness(1.12); }
-.btn:active { transform: translateY(1px); }
-.btn.pri { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
-.btn.big { padding: 15px 26px; font-size: 17px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+h1, h2, h3 { font-weight: 600; text-wrap: balance; }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; border: none; border-radius: 10px; padding: 12px 18px;
+  font: inherit; font-weight: 600; color: var(--text); background: var(--card2); cursor: pointer; text-decoration: none; transition: transform .12s, filter .15s, background .15s; }
+.btn:hover { filter: brightness(1.15); }
+.btn:active { transform: scale(.98); }
+.btn.pri { background: var(--accent); color: var(--accent-ink); }
+.btn.big { padding: 14px 26px; font-size: 18px; border-radius: 12px; }
 .btn:disabled { opacity: .5; cursor: default; }
+.btn svg { width: 20px; height: 20px; flex: none; }
 .muted { color: var(--muted); }
-.tag { display: inline-block; font-size: 13px; font-weight: 600; color: var(--accent); background: var(--accent-bg); border-radius: 99px; padding: 4px 12px; }
+.eyebrow { font-size: 14px; color: var(--muted); }
+.eyebrow::before { content: "// "; }
 
-/* header */
-header { position: sticky; top: 0; z-index: 10; background: rgba(14, 16, 19, .85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
-header .wrap { display: flex; align-items: center; gap: 12px; height: 60px; }
-.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 18px; color: var(--text); text-decoration: none; }
-.logo .mark { width: 32px; height: 32px; flex: none; }
-header nav { margin-left: auto; display: flex; gap: 18px; align-items: center; font-size: 15px; }
-header nav a { color: var(--muted); text-decoration: none; }
-header nav a:hover { color: var(--text); }
-header nav .btn { padding: 8px 14px; font-size: 14px; }
-@media (max-width: 640px) { header nav a:not(.btn) { display: none; } }
+/* header: logo trái, menu giữa, nút phải */
+header { position: sticky; top: 0; z-index: 10; background: rgba(0, 0, 0, .82); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+header .wrap { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 76px; }
+.logo { display: flex; align-items: center; gap: 9px; font-weight: 700; font-size: 19px; letter-spacing: -0.03em; color: var(--text); text-decoration: none; }
+.logo .mark { width: 30px; height: 30px; flex: none; }
+header nav { display: flex; gap: 22px; font-size: 16px; }
+header nav a { color: var(--text); text-decoration: none; opacity: .92; }
+header nav a:hover { opacity: 1; color: var(--accent); }
+header .side { justify-self: end; }
+header .side .btn { padding: 11px 16px; font-size: 15px; }
+@media (max-width: 860px) { header nav { display: none; } header .wrap { grid-template-columns: 1fr auto; } }
 
 /* hero */
-.hero { padding: 64px 0 40px; text-align: center; }
-.hero h1 { font-size: clamp(32px, 6vw, 54px); line-height: 1.15; letter-spacing: -0.02em; margin: 16px auto 16px; max-width: 820px; }
-.hero h1 em { font-style: normal; color: var(--accent); }
-.hero p.lead { font-size: clamp(17px, 2.4vw, 20px); color: var(--muted); max-width: 680px; margin: 0 auto 28px; }
+.hero { padding: 64px 20px 0; text-align: center; }
+.hero h1 { font-size: clamp(36px, 6vw, 60px); line-height: 1.05; letter-spacing: -0.035em; margin: 0 auto 22px; max-width: 900px; }
+.hero h1 .q { color: var(--accent); }
+.hero .lead { font-size: clamp(17px, 2.2vw, 20px); line-height: 1.25; color: var(--muted); max-width: 820px; margin: 0 auto 30px; text-wrap: balance; }
 .cta { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.hero .note { margin-top: 14px; font-size: 14px; color: var(--muted); }
-.shot { margin: 44px auto 0; max-width: 960px; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--card); aspect-ratio: 16 / 10;
-  display: grid; place-items: center; color: var(--muted); }
-.shot img, .shot video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.hero .note { margin-top: 18px; display: flex; gap: 8px; justify-content: center; align-items: center; flex-wrap: wrap; font-size: 14px; color: var(--muted); }
+.hero .note svg { width: 16px; height: 16px; }
+.hero .note i { font-style: normal; opacity: .5; }
+
+/* khung video quay màn hình */
+.media { position: relative; overflow: hidden; background: var(--card2); border-radius: 8px; aspect-ratio: 16 / 9; }
+.media video, .media img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.media .ph { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: 6px; padding: 20px; text-align: center; color: var(--muted); font-size: 14px;
+  background: repeating-linear-gradient(135deg, #151515 0 14px, #121212 14px 28px); }
+.media .ph b { color: var(--text); font-weight: 500; }
+.media .ph code { font: 13px Consolas, monospace; color: var(--accent); }
+.hero .media { max-width: 960px; margin: 72px auto 0; border-radius: 16px; box-shadow: 0 0 0 1px rgba(255, 255, 255, .06); }
+/* video chính: phụ đề luôn hiện (xem không tiếng vẫn hiểu), nút bật tiếng để nghe thuyết minh, vạch tiến độ */
+.media .cap { position: absolute; left: 50%; bottom: 8%; transform: translateX(-50%); width: max-content; max-width: 84%; text-align: center; white-space: pre-line;
+  font-weight: 600; font-size: clamp(14px, 2.1vw, 22px); line-height: 1.3; letter-spacing: -0.01em; color: #fff;
+  background: rgba(0, 0, 0, .72); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border-radius: 10px; padding: .4em .8em; pointer-events: none; }
+.media .cap b { color: var(--accent); font-weight: 700; }
+.media .snd { position: absolute; right: 14px; top: 14px; display: inline-flex; align-items: center; gap: 7px; font: 600 14px Inter, sans-serif; color: #fff; cursor: pointer;
+  background: rgba(0, 0, 0, .6); backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); border: 1px solid rgba(255, 255, 255, .15); border-radius: 99px; padding: 8px 14px; }
+.media .snd:hover { background: rgba(0, 0, 0, .8); }
+.media .snd[aria-pressed="false"] { box-shadow: 0 0 0 0 rgba(69, 225, 187, .6); animation: ping 2.4s infinite; }
+.media .snd svg { width: 17px; height: 17px; }
+@keyframes ping { 70% { box-shadow: 0 0 0 10px rgba(69, 225, 187, 0); } 100% { box-shadow: 0 0 0 0 rgba(69, 225, 187, 0); } }
+.media .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--accent); transform: scaleX(0); transform-origin: left; }
+@media (max-width: 560px) { .media .snd { right: 8px; top: 8px; padding: 6px 10px; font-size: 13px; } }
+
+/* số liệu dưới video hero (kiểu "Backed by the community") */
+.proof { padding: 80px 20px 40px; text-align: center; }
+.proof > p { margin: 0 0 22px; font-size: 20px; color: var(--muted); }
+.proof .row { display: flex; justify-content: center; gap: clamp(28px, 7vw, 88px); flex-wrap: wrap; }
+.proof b { display: block; font-size: 34px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+.proof span { display: block; max-width: 210px; margin-top: 6px; font-size: 14px; color: var(--muted); line-height: 1.35; text-wrap: balance; }
 
 section { padding: 64px 0; }
-section h2 { font-size: clamp(26px, 4vw, 36px); line-height: 1.2; text-align: center; margin: 10px 0 12px; letter-spacing: -0.01em; }
-section .sub { text-align: center; color: var(--muted); max-width: 640px; margin: 0 auto 36px; }
+.sec-head { text-align: center; max-width: 720px; margin: 0 auto 40px; }
+.sec-head h2, .faq-side h2 { font-size: clamp(28px, 4vw, 38px); line-height: 1.1; letter-spacing: -0.03em; margin: 10px 0 12px; }
+.sec-head p { margin: 0; color: var(--muted); font-size: 17px; line-height: 1.4; }
+h2 .dim { color: var(--muted); }
 
-/* pain -> gain */
-.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 760px) { .compare { grid-template-columns: 1fr; } }
-.compare .card h3 { margin: 0 0 10px; font-size: 18px; }
-.compare ul { margin: 0; padding-left: 20px; }
-.compare li { margin: 6px 0; }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
-.card.bad h3 { color: var(--danger); }
-.card.good { border-color: var(--accent); }
-.card.good h3 { color: var(--accent); }
+/* thẻ tính năng: video một bên, chữ một bên, so le */
+.features { display: flex; flex-direction: column; gap: 16px; }
+.feat { display: grid; grid-template-columns: 1.15fr 1fr; gap: 16px; align-items: center; background: var(--card); border-radius: 12px; padding: 16px; }
+.feat.flip .media { order: 2; }
+.feat.solo { grid-template-columns: 1fr; }
+.feat.solo .txt { max-width: 760px; }
+.feat .txt { padding: 24px 32px; }
+.feat h2 { font-size: clamp(26px, 3.2vw, 36px); line-height: 1.1; letter-spacing: -0.03em; margin: 8px 0 14px; }
+.feat p { margin: 0; color: var(--muted); font-size: 15px; line-height: 1.45; }
+.chips { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; width: fit-content; font-size: 13px; font-weight: 500; border-radius: 8px; padding: 6px 10px; }
+.chip.bad { color: var(--danger); background: rgba(255, 107, 107, .08); }
+.chip.ok { color: var(--accent); background: var(--accent-bg); }
+.feat .fine { margin-top: 14px; font-size: 13px; }
+@media (max-width: 860px) {
+  .feat { grid-template-columns: 1fr; }
+  .feat.flip .media { order: 0; }
+  .feat .txt { padding: 12px 8px 16px; }
+}
+.honest { max-width: 760px; margin: 32px auto 0; text-align: center; color: var(--muted); font-size: 15px; line-height: 1.5; }
+.honest b { color: var(--text); font-weight: 600; }
 
-/* steps */
-.steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; counter-reset: s; }
-@media (max-width: 960px) { .steps { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 560px) { .steps { grid-template-columns: 1fr; } }
-.steps .card.auto { border-color: var(--accent); }
-.steps .card.auto::after { content: "Tự động"; position: absolute; top: 20px; right: 18px; font-size: 12px; font-weight: 700; color: var(--accent); }
-.steps .card { position: relative; padding-top: 54px; }
-.steps .card::before { counter-increment: s; content: counter(s); position: absolute; top: 18px; left: 22px; width: 28px; height: 28px; border-radius: 50%;
-  background: var(--accent); color: var(--accent-ink); font-weight: 800; display: grid; place-items: center; font-size: 15px; }
-.steps h3 { margin: 0 0 6px; font-size: 18px; }
-.steps p { margin: 0; color: var(--muted); }
+/* lưới 6 thẻ có icon tròn */
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 860px) { .grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .grid { grid-template-columns: 1fr; } }
+.tile { background: var(--card); border-radius: 12px; padding: 20px; }
+.ico { width: 64px; height: 64px; border-radius: 50%; background: var(--bg); display: grid; place-items: center; margin-bottom: 30px; color: var(--accent); }
+.ico svg { width: 22px; height: 22px; }
+.tile h3 { margin: 0 0 8px; font-size: 16px; font-weight: 500; }
+.tile p { margin: 0; font-size: 16px; line-height: 1.3; }
 
-.tag.center { display: table; margin: 0 auto; }
-
-/* proof numbers under the hero buttons */
-.proof { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 820px; margin: 30px auto 0; }
-.proof div { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 14px 12px; }
-.proof b { display: block; font-size: 24px; color: var(--accent); letter-spacing: -0.01em; }
-.proof span { font-size: 14px; color: var(--muted); line-height: 1.45; display: block; }
-@media (max-width: 640px) { .proof { grid-template-columns: 1fr; } .proof div { display: flex; gap: 12px; align-items: center; text-align: left; } .proof b { min-width: 84px; font-size: 20px; } }
-
-/* the two copyright layers */
-.layers { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 760px) { .layers { grid-template-columns: 1fr; } }
-.layer { display: flex; flex-direction: column; gap: 12px; }
-.layer .lbl { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--muted); }
-.layer h3 { margin: 4px 0 0; font-size: 20px; }
-.layer p { margin: 0; color: var(--muted); flex: 1; }
-.msg { border-radius: 10px; padding: 10px 14px; font-size: 15px; font-weight: 600; }
-.msg.bad { color: var(--danger); background: rgba(255, 107, 107, .1); border: 1px solid rgba(255, 107, 107, .35); }
-.msg.ok { color: var(--accent); background: var(--accent-bg); border: 1px solid rgba(62, 201, 167, .4); }
-.honest { max-width: 760px; margin: 22px auto 0; text-align: center; color: var(--muted); font-size: 15px; }
-
-/* smart automation */
-.auto-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-@media (max-width: 760px) { .auto-grid { grid-template-columns: 1fr; } }
-.group h3 { margin: 0 0 8px; font-size: 19px; }
-.group ul { margin: 0; padding: 0; list-style: none; }
-.group li { padding: 9px 0; border-bottom: 1px dashed var(--line); color: var(--muted); font-size: 15px; }
-.group li:last-child { border-bottom: none; }
-.group li b { color: var(--text); }
-
-/* pricing */
-.plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; align-items: stretch; }
+/* bảng giá */
+.plans { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; align-items: stretch; }
 @media (max-width: 960px) { .plans { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .plans { grid-template-columns: 1fr; } }
-.plan { display: flex; flex-direction: column; gap: 14px; }
-.plan.hot { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; position: relative; }
-.plan.hot::after { content: "Được chọn nhiều nhất"; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); white-space: nowrap;
+.card { background: var(--card); border-radius: 12px; padding: 22px; }
+.plan { display: flex; flex-direction: column; gap: 14px; position: relative; }
+.plan.hot { box-shadow: 0 0 0 1px var(--accent) inset; }
+.plan.hot::after { content: "Được chọn nhiều nhất"; position: absolute; top: -11px; left: 50%; transform: translateX(-50%); white-space: nowrap;
   background: var(--accent); color: var(--accent-ink); font-size: 12px; font-weight: 700; padding: 3px 12px; border-radius: 99px; }
-.plan h3 { margin: 0; font-size: 20px; }
-.price { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; }
-.price small { font-size: 15px; font-weight: 500; color: var(--muted); }
+.plan h3 { margin: 0; font-size: 20px; letter-spacing: -0.02em; }
+.price { font-size: 34px; font-weight: 700; letter-spacing: -0.04em; }
+.price small { font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--muted); }
 .was { display: flex; align-items: center; gap: 8px; margin-top: -8px; font-size: 15px; color: var(--muted); }
 .was s { text-decoration-thickness: 2px; }
 .off { white-space: nowrap; font-size: 12px; font-weight: 700; color: var(--accent-ink); background: var(--warn); border-radius: 6px; padding: 2px 8px; }
@@ -136,56 +154,55 @@ section .sub { text-align: center; color: var(--muted); max-width: 640px; margin
 .sub-name { margin: -10px 0 0; font-size: 14px; color: var(--muted); min-height: 3em; }
 @media (max-width: 560px) { .sub-name { min-height: 0; } }
 .plan ul { list-style: none; margin: 0; padding: 0; flex: 1; }
-.plan li { padding: 6px 0 6px 26px; position: relative; font-size: 15px; border-bottom: 1px dashed var(--line); }
-.plan li:last-child { border-bottom: none; }
+.plan li { padding: 7px 0 7px 26px; position: relative; font-size: 15px; border-top: 1px solid var(--line); }
 .plan li::before { content: "✓"; position: absolute; left: 2px; color: var(--accent); font-weight: 700; }
 .plan li.no { color: var(--muted); }
 .plan li.no::before { content: "—"; color: var(--muted); }
 .plan .btn { width: 100%; }
 .perday { margin-top: -8px; font-size: 14px; color: var(--muted); }
-.guarantee { text-align: center; max-width: 640px; margin: -18px auto 30px; padding: 10px 16px; border: 1px dashed var(--accent); border-radius: 12px; background: var(--accent-bg); font-size: 15px; }
+.guarantee { display: table; margin: -14px auto 32px; padding: 10px 16px; border-radius: 10px; background: var(--accent-bg); font-size: 15px; text-align: center; }
+.price-note { text-align: center; color: var(--muted); font-size: 14px; line-height: 1.55; max-width: 800px; margin: 22px auto 0; }
+.price-note b { color: var(--text); font-weight: 600; }
 .topc p { color: var(--muted); margin: 18px 0 12px; }
-.smart { max-width: 460px; margin: 16px auto 0; text-align: left; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 0 16px; font-size: 14px; }
-.smart summary { cursor: pointer; padding: 12px 0; color: var(--muted); }
-.smart ol { margin: 0 0 8px; padding-left: 20px; }
-.smart p { margin: 0 0 12px; color: var(--muted); }
-.price-note { text-align: center; color: var(--muted); font-size: 14px; margin-top: 18px; }
 
-/* faq */
-.faq { max-width: 760px; margin: 0 auto; }
-.faq details { background: var(--card); border: 1px solid var(--line); border-radius: 12px; margin-bottom: 10px; padding: 0 18px; }
-.faq summary { cursor: pointer; padding: 16px 0; font-weight: 600; list-style: none; display: flex; justify-content: space-between; gap: 12px; }
-.faq summary::after { content: "+"; color: var(--accent); font-size: 22px; line-height: 1; }
-.faq details[open] summary::after { content: "–"; }
-.faq details p { margin: 0 0 16px; color: var(--muted); }
+/* hỏi đáp: tiêu đề trái, danh sách phải */
+.faq-wrap { display: grid; grid-template-columns: 1fr 520px; gap: 40px; align-items: start; }
+@media (max-width: 960px) { .faq-wrap { grid-template-columns: 1fr; } }
+.faq-side h2 { margin-top: 8px; }
+.faq-side p { margin: 0; max-width: 440px; }
+.faq details { background: var(--card); border-radius: 8px; margin-bottom: 16px; padding: 0 16px; }
+.faq summary { cursor: pointer; padding: 16px 0; font-weight: 500; list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: ""; flex: none; width: 14px; height: 14px; transition: transform .2s;
+  background: linear-gradient(currentColor, currentColor) center / 14px 1.5px no-repeat, linear-gradient(currentColor, currentColor) center / 1.5px 14px no-repeat; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { margin: 0 0 16px; color: var(--muted); font-size: 15px; line-height: 1.5; }
 
-.final { text-align: center; background: linear-gradient(180deg, var(--bg), #12201c); border-top: 1px solid var(--line); }
-
-/* download and install */
-.dl-card { display: flex; align-items: center; gap: 18px; max-width: 640px; margin: 0 auto; text-align: left; background: var(--card); border: 1px solid var(--accent);
-  border-radius: 18px; padding: 20px 22px; box-shadow: 0 0 0 1px var(--accent) inset, 0 12px 40px rgba(62, 201, 167, .12); }
+/* tải và cài đặt */
+.dl-card { display: flex; align-items: center; gap: 18px; max-width: 680px; margin: 0 auto; text-align: left; background: var(--card); border-radius: 16px; padding: 20px 22px;
+  box-shadow: 0 0 0 1px rgba(69, 225, 187, .35) inset; }
 .dl-logo { width: 64px; height: 64px; flex: none; }
 .dl-info { flex: 1; min-width: 0; }
-.dl-name { font-size: 19px; font-weight: 800; }
+.dl-name { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
 .dl-meta { font-size: 14px; color: var(--muted); }
 @media (max-width: 560px) { .dl-card { flex-direction: column; text-align: center; } .dl-card .btn { width: 100%; } }
-.install { list-style: none; padding: 0; margin: 40px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; counter-reset: i; text-align: left; }
+.install { list-style: none; padding: 0; margin: 40px 0 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; counter-reset: i; text-align: left; }
 @media (max-width: 960px) { .install { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 560px) { .install { grid-template-columns: 1fr; } }
-.install .card { position: relative; padding-top: 56px; }
-.install .card::before { counter-increment: i; content: counter(i); position: absolute; top: 18px; left: 22px; width: 28px; height: 28px; border-radius: 50%;
-  background: var(--accent); color: var(--accent-ink); font-weight: 800; display: grid; place-items: center; font-size: 15px; }
-.install h3 { margin: 0 0 6px; font-size: 17px; }
-.install p { margin: 0; color: var(--muted); font-size: 15px; }
-.install b { color: var(--text); }
+.install .tile::before { counter-increment: i; content: counter(i); width: 48px; height: 48px; border-radius: 50%; background: var(--bg); color: var(--accent);
+  font-weight: 700; font-size: 18px; display: grid; place-items: center; margin-bottom: 22px; }
+.install p { font-size: 15px; line-height: 1.45; color: var(--muted); }
+.install b { color: var(--text); font-weight: 600; }
+.needs { max-width: 760px; margin: 24px auto 0; font-size: 15px; display: flex; flex-direction: column; gap: 4px; text-align: center; }
+#tai-ve { text-align: center; }
 /* what to click when the browser or SmartScreen warns about the unsigned installer */
-.warn-guide { margin: 36px auto 0; max-width: 980px; text-align: left; scroll-margin-top: 80px; border-radius: 18px; transition: box-shadow .4s; }
+.warn-guide { margin: 36px auto 0; max-width: 980px; text-align: left; scroll-margin-top: 90px; border-radius: 16px; transition: box-shadow .4s; }
 .warn-guide.flash { box-shadow: 0 0 0 3px var(--warn); }
-.wg-title { text-align: center; font-size: 22px; margin: 0 0 6px; }
+.wg-title { text-align: center; font-size: 22px; letter-spacing: -0.02em; margin: 0 0 6px; }
 .wg-why { text-align: center; color: var(--muted); max-width: 680px; margin: 0 auto 18px; font-size: 15px; }
-.wg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.wg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 @media (max-width: 860px) { .wg-grid { grid-template-columns: 1fr; } }
-.wg-head { font-weight: 800; font-size: 17px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.wg-head { font-weight: 700; font-size: 17px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
 .wg-head small { flex-basis: 100%; font-weight: 400; font-size: 13px; color: var(--muted); }
 .wg-n { width: 28px; height: 28px; border-radius: 50%; background: var(--warn); color: var(--accent-ink); display: grid; place-items: center; font-size: 15px; }
 .wg-steps { margin: 14px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 14px; color: var(--muted); font-size: 15px; }
@@ -212,23 +229,37 @@ section .sub { text-align: center; color: var(--muted); max-width: 640px; margin
 .ss-p { margin: 6px 0; }
 .ss-link { text-decoration: underline; padding: 0 2px; }
 .ss-btns span { border: 2px solid #fff; padding: 4px 14px; }
-.needs { max-width: 760px; margin: 22px auto 0; font-size: 15px; display: flex; flex-direction: column; gap: 4px; }
-footer { border-top: 1px solid var(--line); padding: 28px 0 90px; color: var(--muted); font-size: 14px; }
-footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
 
-/* sticky buy bar on phones (Facebook traffic) */
+/* footer */
+footer { background: var(--card); padding: 48px 0 90px; margin-top: 40px; font-size: 15px; }
+footer .wrap { display: flex; gap: 32px; flex-wrap: wrap; justify-content: space-between; }
+footer .about { max-width: 320px; }
+footer .about p { color: var(--muted); margin: 12px 0 0; line-height: 1.4; }
+footer h4 { margin: 0 0 14px; font-size: 15px; font-weight: 600; }
+footer .col { display: flex; flex-direction: column; gap: 10px; }
+footer .col a { color: var(--text); text-decoration: none; }
+footer .col a:hover { color: var(--accent); }
+footer .legal { width: 100%; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 20px; }
+footer .legal a { color: var(--muted); }
+
+/* hiện dần khi cuộn tới */
+.js .rv { opacity: 0; transform: translateY(18px); transition: opacity .6s ease, transform .6s ease; }
+.js .rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .js .rv { opacity: 1; transform: none; transition: none; } html { scroll-behavior: auto; } }
+
+/* thanh mua cố định trên điện thoại (khách từ Facebook) */
 .mbar { display: none; }
 @media (max-width: 640px) {
   .mbar { display: flex; gap: 8px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
-    background: rgba(14, 16, 19, .95); border-top: 1px solid var(--line); }
+    background: rgba(0, 0, 0, .92); border-top: 1px solid var(--line); }
   .mbar .btn { flex: 1; padding: 12px 10px; font-size: 15px; }
 }
 
-/* checkout */
-.ov { position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, .7); display: none; align-items: center; justify-content: center; padding: 16px; }
+/* thanh toán */
+.ov { position: fixed; inset: 0; z-index: 50; background: rgba(0, 0, 0, .75); display: none; align-items: center; justify-content: center; padding: 16px; }
 .ov.on { display: flex; }
-.box { background: var(--card); border: 1px solid var(--line); border-radius: 18px; width: min(480px, 100%); max-height: 100%; overflow: auto; padding: 22px; position: relative; }
-.box h3 { margin: 0 0 4px; font-size: 21px; }
+.box { background: var(--card); border: 1px solid var(--line); border-radius: 16px; width: min(480px, 100%); max-height: 100%; overflow: auto; padding: 22px; position: relative; }
+.box h3 { margin: 0 0 4px; font-size: 21px; letter-spacing: -0.02em; }
 .box .x { position: absolute; top: 12px; right: 14px; background: none; border: none; color: var(--muted); font-size: 28px; cursor: pointer; line-height: 1; }
 .field { display: flex; flex-direction: column; gap: 6px; margin: 14px 0; font-size: 14px; color: var(--muted); }
 .field input, .field select { font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
@@ -248,7 +279,7 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
   border-radius: 12px; padding: 16px; margin: 14px 0; word-break: break-all; }
 .box ol { padding-left: 20px; margin: 10px 0; }
 
-/* floating Zalo button, above the phone buy bar */
+/* nút Zalo nổi, nằm trên thanh mua của điện thoại */
 .zalo { position: fixed; right: 16px; bottom: 20px; z-index: 30; width: 56px; height: 56px; border-radius: 50%; background: #0068ff; color: #fff;
   display: grid; place-items: center; font-weight: 800; font-size: 14px; text-decoration: none; box-shadow: 0 6px 20px rgba(0, 104, 255, .45); }
 .zalo:hover { filter: brightness(1.1); }
@@ -256,171 +287,144 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
 </style>
 </head>
 <body>
+<script>document.documentElement.classList.add('js');</script>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 64 64"><rect x="3" y="3" width="58" height="58" rx="15" fill="#1b1e24" stroke="#45e1bb" stroke-width="3.5"/><path d="M15.6 26.5v11M20.6 22.3v19.6M25.6 17.9v28.3M30.6 22.9v18.3M37.5 16v32.1M44.4 21v22.1M51.2 25.4v13.3" stroke="#45e1bb" stroke-width="3.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6 11l6 6 6-6M5 20h14"/></symbol>
+  <symbol id="i-win" viewBox="0 0 24 24" fill="currentColor"><path d="M3 5.5 10.5 4.4v7.1H3zM11.5 4.3 21 3v8.5h-9.5zM3 12.5h7.5v7.1L3 18.5zM11.5 12.5H21V21l-9.5-1.3z"/></symbol>
+</svg>
 
 <header>
   <div class="wrap">
-    <a class="logo" href="#"><svg class="mark" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="3" y="3" width="58" height="58" rx="15" fill="#1b1e24" stroke="#3ec9a7" stroke-width="3.5"/><path d="M15.6 26.5v11M20.6 22.3v19.6M25.6 17.9v28.3M30.6 22.9v18.3M37.5 16v32.1M44.4 21v22.1M51.2 25.4v13.3" stroke="#3ec9a7" stroke-width="3.4" stroke-linecap="round"/></svg>Xưởng Cover AI</a>
+    <a class="logo" href="#"><svg class="mark" aria-hidden="true"><use href="#logo"/></svg>Xưởng Cover AI</a>
     <nav>
-      <a href="#ban-quyen">Bản quyền</a>
-      <a href="#tu-dong">Tự động</a>
+      <a href="#ban-quyen">Tính năng</a>
       <a href="#bang-gia">Bảng giá</a>
       <a href="#hoi-dap">Hỏi đáp</a>
       <a href="#tai-ve">Cài đặt</a>
-      <a class="btn pri" href="#tai-ve" data-download>Tải miễn phí</a>
     </nav>
+    <div class="side"><a class="btn" href="#tai-ve" data-download><svg><use href="#i-dl"/></svg>Tải miễn phí</a></div>
   </div>
 </header>
 
 <main>
-  <div class="hero wrap">
-    <span class="tag">Giải pháp cho lỗi bản quyền trên Suno AI</span>
-    <h1>Suno chặn bản quyền? Cover <em>hàng trăm bài</em> vẫn lên trơn tru</h1>
-    <p class="lead">Tải bài muốn cover lên Suno thì bị báo trùng bản quyền, dán lời vào lại bị chặn tiếp. Xưởng Cover AI phân rã âm thanh trước khi đăng, xếp lại lời theo chuẩn Suno, rồi tự đăng hàng loạt. Bạn chỉ việc chọn phong cách cover, remix hay beat và nhận bài.</p>
-    <div class="cta">
-      <a class="btn pri big" href="#tai-ve" data-download>⬇ Tải về dùng thử</a>
-      <a class="btn big" href="#ban-quyen">Xem cách hoạt động</a>
-    </div>
-    <div class="proof">
-      <div><b>236/247</b><span>bài qua kiểm tra bản quyền trong một lần chạy thật</span></div>
+  <div class="hero">
+    <h1><span class="q">Suno chặn bản quyền?</span> Cover hàng trăm bài vẫn lên trơn tru</h1>
+    <p class="lead">Xưởng Cover AI phân rã âm thanh, xếp lại lời theo chuẩn Suno và tự đăng hàng loạt. Bạn chỉ việc chọn phong cách cover, remix hay beat rồi nhận bài.</p>
+    <div class="cta"><a class="btn pri big" href="#tai-ve" data-download><svg><use href="#i-dl"/></svg>Tải về dùng thử</a></div>
+    <div class="note"><svg><use href="#i-win"/></svg>Windows 10/11 <i>·</i> 10 bài miễn phí <i>·</i> Không cần thẻ ngân hàng</div>
+    <!-- Video chính: media/hero.mp4 (16:9, có giọng thuyết minh), phụ đề lấy từ media/hero.vtt. Chưa có video thì hiện ảnh app.png. -->
+    <div class="media rv" data-src="media/hero.mp4" data-poster="app.png" data-vtt="media/hero.vtt" data-player data-label="Video chính: vấn đề và giải pháp"></div>
+  </div>
+
+  <div class="proof rv">
+    <p>Kết quả một lần chạy thật</p>
+    <div class="row">
+      <div><b>236/247</b><span>bài qua kiểm tra bản quyền của Suno</span></div>
       <div><b>15 bài</b><span>xử lý cùng lúc, để máy chạy không cần canh</span></div>
-      <div><b>WAV</b><span>tải hàng loạt, không tính vào hạn mức tải của Suno</span></div>
-    </div>
-    <div class="note">Dùng thử 10 bài miễn phí · Không cần thẻ ngân hàng · Dùng tài khoản Suno của chính bạn</div>
-    <div class="shot" id="demo">
-      <!-- Thay bằng ảnh chụp app hoặc video demo: <video src="demo.mp4" autoplay muted loop playsinline></video> -->
-      <img src="app.png" alt="Màn hình app Xưởng Cover AI" onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Ảnh / video demo của app'}))">
+      <div><b>1.779</b><span>phong cách cover và beat có sẵn</span></div>
     </div>
   </div>
 
   <section id="ban-quyen">
     <div class="wrap">
-      <span class="tag center">Vấn đề ai cover trên Suno cũng gặp</span>
-      <h2>Hai lớp chặn bản quyền, một app vượt qua cả hai</h2>
-      <p class="sub">Suno kiểm tra cả file nhạc bạn tải lên lẫn lời bạn dán vào. Bị chặn ở lớp nào thì bài cover cũng không làm được.</p>
-      <div class="layers">
-        <div class="card layer">
-          <div class="lbl">Lớp 1 · File nhạc tải lên</div>
-          <div class="msg bad">✕ Suno báo bài tải lên trùng với bản thu đã có bản quyền</div>
-          <h3>App phân rã âm thanh trước khi đăng</h3>
-          <p>Mỗi bài được phân rã và tái cấu trúc thành một bản âm thanh mới rồi mới tải lên Suno. Đăng xong, app tự khôi phục nhịp bài ngay trong Suno để bạn cover đúng nhịp gốc.</p>
-          <div class="msg ok">✓ Đã đăng lên Suno, sẵn sàng cover</div>
+      <div class="features">
+        <div class="feat rv">
+          <div class="media" data-src="media/phan-ra.mp4" data-label="Thả nhạc hoặc playlist YouTube, app phân rã rồi đăng lên Suno"></div>
+          <div class="txt">
+            <div class="eyebrow">Lớp chặn 1 · File nhạc</div>
+            <h2>Phân rã âm thanh, qua kiểm tra bản quyền</h2>
+            <p>Mỗi bài được phân rã và tái cấu trúc thành một bản âm thanh mới rồi mới tải lên Suno. Đăng xong, app tự khôi phục nhịp bài ngay trong Suno để bạn cover đúng nhịp gốc.</p>
+            <div class="chips"><span class="chip bad">✕ Suno báo trùng bản thu có bản quyền</span><span class="chip ok">✓ Đã đăng lên Suno, sẵn sàng cover</span></div>
+          </div>
         </div>
-        <div class="card layer">
-          <div class="lbl">Lớp 2 · Lời bài hát</div>
-          <div class="msg bad">✕ Suno chặn lời bài hát vì trùng bản quyền</div>
-          <h3>App xếp lại lời theo chuẩn Suno</h3>
-          <p>App tự tìm lời trên Hợp Âm Việt, làm sạch hợp âm và ký hiệu, sắp lại theo cấu trúc Verse, Chorus, Outro và định dạng để Suno nhận. Bạn chỉ việc bấm copy rồi dán vào.</p>
-          <div class="msg ok">✓ Lời đã sẵn sàng, copy một nút</div>
+        <div class="feat flip rv">
+          <div class="media" data-src="media/loi.mp4" data-label="Tìm lời, xếp lại theo chuẩn Suno, copy một nút"></div>
+          <div class="txt">
+            <div class="eyebrow">Lớp chặn 2 · Lời bài hát</div>
+            <h2>Lời bài hát xếp lại theo chuẩn Suno</h2>
+            <p>App tự tìm lời, làm sạch hợp âm và ký hiệu, sắp lại theo cấu trúc Verse, Chorus, Outro và định dạng để Suno nhận. Bạn chỉ việc bấm copy rồi dán vào.</p>
+            <div class="chips"><span class="chip bad">✕ Suno chặn lời vì trùng bản quyền</span><span class="chip ok">✓ Lời đã sẵn sàng, copy một nút</span></div>
+          </div>
         </div>
-      </div>
-      <p class="honest"><b>Nói thật:</b> không cách nào qua được 100% số bài. Bài nào Suno vẫn chặn, app đánh dấu rõ rồi chạy tiếp bài khác, không làm dừng cả lô. Hãy dùng thử 10 bài miễn phí để tự kiểm chứng với nhạc của bạn.</p>
-    </div>
-  </section>
-
-  <section id="cach-lam">
-    <div class="wrap">
-      <span class="tag center">4 bước · Bạn chỉ làm bước đầu và bước cuối</span>
-      <h2>Hệ thống làm gì cho bạn</h2>
-      <p class="sub">Cài một lần, đăng nhập Suno một lần. Từ đó mỗi đợt cover chỉ là thả nhạc vào và chọn phong cách.</p>
-      <div class="steps">
-        <div class="card"><h3>Đưa nhạc vào</h3><p>Chọn file, cả thư mục, hoặc dán link và playlist YouTube. App tự tải nhạc về.</p></div>
-        <div class="card auto"><h3>Phân rã âm thanh</h3><p>Mỗi bài được phân rã thành bản âm thanh mới để qua được kiểm tra bản quyền khi tải lên.</p></div>
-        <div class="card auto"><h3>Tự đăng lên Suno</h3><p>App đăng vào workspace riêng của dự án, khôi phục nhịp, đặt tên và kiểm tra lại từng bài.</p></div>
-        <div class="card"><h3>Chọn phong cách, nhận bài</h3><p>Dán tên và lời, chọn cover, remix hay beat rồi bấm Create. Xong thì tải WAV hàng loạt về máy.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="wrap">
-      <h2>Từ mấy tiếng bấm tay, còn vài phút</h2>
-      <p class="sub">Mỗi bài cover đều phải qua cùng một chuỗi việc lặp đi lặp lại. App làm hết chuỗi đó, nhiều bài cùng lúc.</p>
-      <div class="compare">
-        <div class="card bad">
-          <h3>Làm tay</h3>
-          <ul>
-            <li>Tải nhạc lên Suno, bị báo trùng bản quyền, tự mày mò xử lý từng bài</li>
-            <li>Đăng từng file, đặt tên, chọn workspace</li>
-            <li>Mở editor, chỉnh lại nhịp, lưu, đổi tên</li>
-            <li>Tìm lời, sửa lời cho khỏi bị chặn</li>
-            <li>Tải từng bài WAV về, dễ đụng giới hạn tải</li>
-          </ul>
+        <div class="feat rv">
+          <div class="media" data-src="media/hang-loat.mp4" data-label="Danh sách nhiều bài chạy song song, bài xong đánh dấu ✓"></div>
+          <div class="txt">
+            <div class="eyebrow">Tự động</div>
+            <h2>15 bài chạy cùng lúc, để máy tự làm</h2>
+            <p>Chọn cả thư mục nhạc hoặc dán playlist YouTube. Bài nào phân rã xong được đăng ngay, không chờ cả lô. Thêm nhạc khi đang chạy cũng được, mỗi đợt cover là một dự án và workspace riêng.</p>
+          </div>
         </div>
-        <div class="card good">
-          <h3>Với Xưởng Cover AI</h3>
-          <ul>
-            <li>Chọn cả thư mục nhạc hoặc dán playlist YouTube</li>
-            <li>App tự phân rã, đăng và khôi phục nhịp, nhiều bài song song</li>
-            <li>Mỗi đợt cover là một dự án riêng, workspace riêng</li>
-            <li>Lời tự tìm và xếp sẵn theo chuẩn Suno, copy một nút</li>
-            <li>Tải WAV hàng loạt, không tính vào hạn mức của Suno</li>
-          </ul>
+        <div class="feat flip rv">
+          <div class="media" data-src="media/phong-cach.mp4" data-label="Chọn phong cách trong thư viện, bấm Cover ngay"></div>
+          <div class="txt">
+            <div class="eyebrow">Phong cách</div>
+            <h2>1.779 phong cách có sẵn, Cover ngay một nút</h2>
+            <p>709 phong cách có lời và 1.070 beat không lời, chia theo nhóm. Chọn một phong cách, bấm Cover ngay: app điền sẵn form trên Suno, bạn chỉ xem lại và bấm Create.</p>
+          </div>
+        </div>
+        <div class="feat rv">
+          <div class="media" data-src="media/wav.mp4" data-label="Chọn nhiều bài, tải WAV hàng loạt về máy"></div>
+          <div class="txt">
+            <div class="eyebrow">Tải về</div>
+            <h2>Tải WAV hàng loạt, không tốn hạn mức</h2>
+            <p>WAV chất lượng cao 48 kHz tải qua Suno Studio, không tính vào hạn mức tải WAV hàng tháng của Suno. Lọc nhanh bài chưa tải, bài đã thích, tìm tên bài không cần gõ dấu.</p>
+            <p class="fine muted">Tải hàng loạt có từ gói Chuyên nghiệp. Gói Cá nhân tải từng bài.</p>
+          </div>
         </div>
       </div>
+      <p class="honest rv"><b>Nói thật:</b> không cách nào qua được 100% số bài. Bài nào Suno vẫn chặn, app đánh dấu rõ rồi chạy tiếp bài khác, không làm dừng cả lô. Hãy dùng thử 10 bài miễn phí để tự kiểm chứng với nhạc của bạn.</p>
     </div>
   </section>
 
   <section id="tu-dong">
     <div class="wrap">
-      <span class="tag center">Tự động hoá thông minh</span>
-      <h2>Không chỉ bấm hộ. App tự xử lý như người làm lâu năm</h2>
-      <p class="sub">Chạy hàng trăm bài thì thế nào cũng có sự cố. Điểm khác biệt là app tự nhận ra và tự xử lý, nên bạn có thể để máy chạy qua đêm mà không phải canh.</p>
-      <div class="auto-grid">
-        <div class="card group">
-          <h3>⚙ Chạy như dây chuyền</h3>
-          <ul>
-            <li><b>Bài nào xong trước đi trước.</b> Bài vừa phân rã xong được đăng ngay, không chờ cả lô. Bước đăng và bước khôi phục nhịp chạy song song.</li>
-            <li><b>Tới 15 bài cùng lúc</b> trên Suno, tuỳ gói.</li>
-            <li><b>Thêm nhạc khi đang chạy.</b> Bài mới thả vào được nhập luôn vào lượt đang chạy.</li>
-          </ul>
-        </div>
-        <div class="card group">
-          <h3>🛟 Tự lo khi có sự cố</h3>
-          <ul>
-            <li><b>Thử lại đúng bước bị lỗi</b>, không làm lại bài từ đầu.</li>
-            <li><b>Bài bị Suno chặn</b> được đánh dấu riêng và bỏ qua. Cả lô vẫn chạy tiếp.</li>
-            <li><b>Tự dừng khi thấy bất thường.</b> Nhiều bài lỗi liên tiếp (ví dụ Suno vừa đổi giao diện) thì app dừng lại và báo bạn, không chạy phí cả lô.</li>
-            <li><b>Phiên Suno hết hạn</b> thì app báo đăng nhập lại.</li>
-          </ul>
-        </div>
-        <div class="card group">
-          <h3>🔎 Tự kiểm tra lại</h3>
-          <ul>
-            <li><b>Đúng workspace, đúng tên.</b> Sau mỗi bài, app mở Suno kiểm tra bài đã nằm đúng chỗ và đúng tên.</li>
-            <li><b>Không làm trùng.</b> Bài đã xong không bị làm lại, kể cả khi có bài trùng tên.</li>
-            <li><b>Gọn ổ cứng.</b> File trung gian được xoá ngay khi bài xong.</li>
-          </ul>
-        </div>
-        <div class="card group">
-          <h3>⬇ Tải về và quản lý</h3>
-          <ul>
-            <li><b>WAV chất lượng cao</b> (48 kHz) tải hàng loạt qua Suno Studio, không tính vào hạn mức tải WAV hàng tháng của Suno.</li>
-            <li><b>Lọc nhanh</b> bài chưa tải, bài đã thích. Tìm tên bài không cần gõ dấu.</li>
-            <li><b>App tự cập nhật</b> khi có bản mới, nhất là khi Suno thay đổi.</li>
-          </ul>
-        </div>
+      <div class="sec-head rv">
+        <div class="eyebrow">Tự động hoá thông minh</div>
+        <h2>Tự xử lý sự cố <span class="dim">như người làm lâu năm</span></h2>
+        <p>Chạy hàng trăm bài thì thế nào cũng có trục trặc. App tự nhận ra và tự xử lý, nên bạn có thể để máy chạy qua đêm.</p>
+      </div>
+      <div class="grid">
+        <div class="tile rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg></div>
+          <h3>Thử lại đúng bước lỗi</h3><p>Một bước hỏng thì chỉ làm lại bước đó, không làm lại bài từ đầu.</p></div>
+        <div class="tile rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4l10 8-10 8V4zM19 5v14"/></svg></div>
+          <h3>Bài bị chặn không làm dừng lô</h3><p>Bài Suno vẫn chặn được đánh dấu riêng và bỏ qua. Các bài khác chạy tiếp.</p></div>
+        <div class="tile rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l9.5 17h-19L12 3z"/><path d="M12 10v4M12 17.5v.01"/></svg></div>
+          <h3>Tự dừng khi bất thường</h3><p>Nhiều bài lỗi liên tiếp, ví dụ Suno vừa đổi giao diện, thì app dừng lại và báo bạn.</p></div>
+        <div class="tile rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg></div>
+          <h3>Tự kiểm tra từng bài</h3><p>Sau mỗi bài, app mở Suno xem bài đã nằm đúng workspace, đúng tên. Bài đã xong không bị làm trùng.</p></div>
+        <div class="tile rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></div>
+          <h3>Dùng tài khoản Suno của bạn</h3><p>Đăng nhập Suno một lần. Phiên hết hạn thì app báo đăng nhập lại.</p></div>
+        <div class="tile rv"><div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></div>
+          <h3>Tự cập nhật</h3><p>Có bản mới, nhất là khi Suno thay đổi, app tự tải và cài. File trung gian được xoá ngay cho gọn ổ cứng.</p></div>
       </div>
     </div>
   </section>
 
   <section id="bang-gia">
     <div class="wrap">
-      <span class="tag" style="display:table;margin:0 auto">Thanh toán theo tháng</span>
-      <h2>Bảng giá</h2>
-      <p class="sub">Dùng thử miễn phí trước. Mua gói chỉ mất 1 phút: quét QR chuyển khoản, key hiện ra ngay.</p>
+      <div class="sec-head rv">
+        <div class="eyebrow">Thanh toán theo tháng</div>
+        <h2>Bảng giá</h2>
+        <p>Dùng thử miễn phí trước. Mua gói chỉ mất 1 phút: quét QR chuyển khoản, key hiện ra ngay.</p>
+      </div>
       <div class="guarantee">🛡 <b>Hoàn tiền 100% trong 3 ngày</b> nếu app không chạy được trên máy bạn · <a href="chinh-sach.html#hoan-tien">Xem chính sách</a></div>
       <div class="plans" id="plans"></div>
       <div class="price-note"><b>Giá ra mắt</b>: giá gạch ngang là giá thường sẽ áp dụng sau giai đoạn ra mắt. <b>Mua trong giai đoạn ra mắt, bạn giữ giá này mỗi lần gia hạn</b> (cùng gói), dù sau này giá bán tăng.<br>
         Credit Suno do Suno tính riêng trên tài khoản của bạn. Đã có key? Gia hạn bằng nút bên dưới.<br>
-        <button class="btn" style="margin-top:12px" onclick="checkout('', true)">Gia hạn key</button></div>
+        <button class="btn" style="margin-top:14px" onclick="checkout('', true)">Gia hạn key</button></div>
     </div>
   </section>
 
   <section id="hoi-dap">
-    <div class="wrap">
-      <h2>Hỏi đáp</h2>
-      <p class="sub">Chưa thấy câu bạn cần? Bấm nút Zalo ở góc màn hình để hỏi trực tiếp.</p>
-      <div class="faq">
+    <div class="wrap faq-wrap">
+      <div class="faq-side rv">
+        <div class="eyebrow">Hỏi đáp</div>
+        <h2>Còn thắc mắc? <span class="dim">Có câu trả lời.</span></h2>
+        <p>Chưa thấy câu bạn cần? Bấm nút Zalo ở góc màn hình để hỏi trực tiếp.</p>
+      </div>
+      <div class="faq rv">
         <details><summary>Máy tôi cần gì để chạy?</summary><p>Máy tính Windows 10/11 64-bit, đã cài Google Chrome, có mạng ổn định, và một tài khoản Suno. Bản Mac sẽ có sau.</p></details>
         <details><summary>Bản miễn phí có giới hạn gì?</summary><p>Đủ mọi tính năng, làm được 10 bài, mỗi lúc 2 bài trên Suno. Đủ để bạn thấy app làm được gì trước khi mua.</p></details>
         <details><summary>Mua xong nhận key thế nào?</summary><p>Quét QR chuyển khoản đúng số tiền và nội dung. Hệ thống tự nhận tiền, key hiện ra ngay trên trang (thường dưới 1 phút). Mở app › Cài đặt › nhập key là xong.</p></details>
@@ -433,19 +437,21 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
     </div>
   </section>
 
-  <section class="final" id="tai-ve">
+  <section id="tai-ve">
     <div class="wrap">
-      <span class="tag center">Miễn phí 10 bài đầu</span>
-      <h2>Tải và cài đặt</h2>
-      <p class="sub">Cài một lần, app tự cập nhật bản mới. Hết 10 bài miễn phí, chọn gói ngay trong app.</p>
+      <div class="sec-head rv">
+        <div class="eyebrow">Miễn phí 10 bài đầu</div>
+        <h2>Tải và cài đặt</h2>
+        <p>Cài một lần, app tự cập nhật bản mới. Hết 10 bài miễn phí, chọn gói ngay trong app.</p>
+      </div>
 
-      <div class="dl-card">
-        <svg class="dl-logo" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect x="3" y="3" width="58" height="58" rx="15" fill="#1b1e24" stroke="#3ec9a7" stroke-width="3.5"/><path d="M15.6 26.5v11M20.6 22.3v19.6M25.6 17.9v28.3M30.6 22.9v18.3M37.5 16v32.1M44.4 21v22.1M51.2 25.4v13.3" stroke="#3ec9a7" stroke-width="3.4" stroke-linecap="round"/></svg>
+      <div class="dl-card rv">
+        <svg class="dl-logo" aria-hidden="true"><use href="#logo"/></svg>
         <div class="dl-info">
           <div class="dl-name">Xưởng Cover AI cho Windows</div>
           <div class="dl-meta" id="dlMeta">Windows 10/11 · 64-bit</div>
         </div>
-        <a class="btn pri big" id="dlBtn" data-download href="#">⬇ Tải bộ cài</a>
+        <a class="btn pri big" id="dlBtn" data-download href="#"><svg><use href="#i-dl"/></svg>Tải bộ cài</a>
       </div>
       <div class="note muted" id="dlNote" style="margin-top:12px;font-size:14px">Đang xem trên điện thoại? Hãy mở trang này trên máy tính để tải app.</div>
       <div class="topc" id="toPc" hidden>
@@ -454,10 +460,10 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
       </div>
 
       <ol class="install">
-        <li class="card"><h3>Tải bộ cài</h3><p>Bấm <b>Tải bộ cài</b> ở trên. File <b>XuongCoverAI-Setup.exe</b> (khoảng 100 MB) về thư mục Downloads.</p></li>
-        <li class="card"><h3>Mở file để cài</h3><p>Trình duyệt hoặc Windows hiện cảnh báo? Bình thường với app mới. Làm theo <a href="#canh-bao">hướng dẫn có hình bên dưới</a>, mất chừng 10 giây.</p></li>
-        <li class="card"><h3>Mở app từ Desktop</h3><p>Cài xong, biểu tượng <b>Xưởng Cover AI</b> có sẵn trên màn hình Desktop và trong menu Start. Bấm đúp để mở.</p></li>
-        <li class="card"><h3>Đăng nhập Suno</h3><p>App mở Chrome để bạn đăng nhập tài khoản Suno một lần. Xong là tạo dự án và làm bài ngay.</p></li>
+        <li class="tile rv"><h3>Tải bộ cài</h3><p>Bấm <b>Tải bộ cài</b> ở trên. File <b>XuongCoverAI-Setup.exe</b> (khoảng 100 MB) về thư mục Downloads.</p></li>
+        <li class="tile rv"><h3>Mở file để cài</h3><p>Trình duyệt hoặc Windows hiện cảnh báo? Bình thường với app mới. Làm theo <a href="#canh-bao">hướng dẫn có hình bên dưới</a>, mất chừng 10 giây.</p></li>
+        <li class="tile rv"><h3>Mở app từ Desktop</h3><p>Cài xong, biểu tượng <b>Xưởng Cover AI</b> có sẵn trên màn hình Desktop và trong menu Start. Bấm đúp để mở.</p></li>
+        <li class="tile rv"><h3>Đăng nhập Suno</h3><p>App mở Chrome để bạn đăng nhập tài khoản Suno một lần. Xong là tạo dự án và làm bài ngay.</p></li>
       </ol>
 
       <div class="warn-guide" id="canh-bao">
@@ -512,15 +518,25 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
         <div><b>Máy cần có:</b> Windows 10/11 64-bit · <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> · mạng ổn định · tài khoản Suno.</div>
         <span class="muted">Cài không được? Bấm nút Zalo ở góc màn hình để được hướng dẫn.</span>
       </div>
-      <div class="cta" style="margin-top:22px"><a class="btn big" href="#bang-gia">Xem bảng giá</a></div>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap">
-    <div>© Xưởng Cover AI · <a href="chinh-sach.html#hoan-tien">Hoàn tiền</a> · <a href="chinh-sach.html#dieu-khoan">Điều khoản</a> · <a href="chinh-sach.html#bao-mat">Bảo mật</a></div>
-    <div id="contact"></div>
+    <div class="about">
+      <a class="logo" href="#"><svg class="mark" aria-hidden="true"><use href="#logo"/></svg>Xưởng Cover AI</a>
+      <p>Cover nhạc hàng loạt trên Suno AI, không còn lỗi bản quyền.</p>
+      <p id="contact"></p>
+    </div>
+    <div class="col">
+      <h4>Điều hướng</h4>
+      <a href="#ban-quyen">Tính năng</a>
+      <a href="#bang-gia">Bảng giá</a>
+      <a href="#hoi-dap">Hỏi đáp</a>
+      <a href="#tai-ve">Tải và cài đặt</a>
+    </div>
+    <div class="legal">© Xưởng Cover AI · <a href="chinh-sach.html#hoan-tien">Hoàn tiền</a> · <a href="chinh-sach.html#dieu-khoan">Điều khoản</a> · <a href="chinh-sach.html#bao-mat">Bảo mật</a></div>
   </div>
 </footer>
 
@@ -555,6 +571,71 @@ const api = async (body) => {
   return r.json();
 };
 let prices = [];
+
+// ---- video quay màn hình: chỉ tải khi sắp cuộn tới, chỉ phát khi đang nhìn thấy (như recordly.dev)
+// .mp4/.webm thành <video> lặp, không tiếng; .gif thành <img>. Thiếu file: hiện ảnh poster, không có poster thì hiện khung ghi chú.
+for (const box of document.querySelectorAll('.media[data-src]')) {
+  const src = box.dataset.src, poster = box.dataset.poster;
+  const fallback = () => {
+    box.replaceChildren();
+    if (poster) box.append(Object.assign(document.createElement('img'), { src: poster, alt: 'Màn hình app Xưởng Cover AI' }));
+    else if (/^(127\.0\.0\.1|localhost)$/.test(location.hostname) || location.protocol === 'file:') box.innerHTML = `<div class="ph"><b>${esc(box.dataset.label || '')}</b><code>${esc(src)}</code></div>`;
+    else { box.closest('.feat')?.classList.add('solo'); box.remove(); } // live site, video not recorded yet: text-only card
+  };
+  const load = () => {
+    if (/\.gif$/i.test(src)) {
+      box.append(Object.assign(document.createElement('img'), { src, alt: box.dataset.label || '', loading: 'lazy', onerror: fallback }));
+      return;
+    }
+    const v = Object.assign(document.createElement('video'), { muted: true, loop: true, playsInline: true, preload: 'auto' });
+    v.setAttribute('muted', ''); v.setAttribute('playsinline', '');
+    if (poster) v.poster = poster;
+    v.onerror = fallback;
+    v.append(Object.assign(document.createElement('source'), { src, onerror: fallback }));
+    box.append(v);
+    if (box.hasAttribute('data-player')) player(box, v);
+    new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }, { threshold: 0.25 }).observe(box);
+  };
+  const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); load(); } }, { rootMargin: '600px 0px' });
+  near.observe(box);
+}
+// Video chính: tự phát không tiếng, phụ đề từ file .vtt (chữ trong <b> màu xanh ngọc), nút bật tiếng.
+// Lần đầu bật tiếng thì phát lại từ đầu để khách nghe trọn câu chuyện.
+function player(box, v) {
+  const cap = Object.assign(document.createElement('div'), { className: 'cap', hidden: true });
+  const bar = Object.assign(document.createElement('div'), { className: 'bar' });
+  const snd = Object.assign(document.createElement('button'), { className: 'snd', type: 'button' });
+  const ICON_OFF = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="m22 9-6 6M16 9l6 6"/></svg>';
+  const ICON_ON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M19 5a10 10 0 0 1 0 14"/></svg>';
+  const label = () => { snd.innerHTML = v.muted ? `${ICON_OFF}Bật tiếng` : `${ICON_ON}Tắt tiếng`; snd.setAttribute('aria-pressed', String(!v.muted)); };
+  let cues = [], heard = false, shown = null;
+  snd.onclick = () => {
+    v.muted = !v.muted;
+    if (!v.muted && !heard) { heard = true; v.currentTime = 0; }
+    v.play().catch(() => {});
+    label();
+  };
+  v.addEventListener('timeupdate', () => {
+    const t = v.currentTime, c = cues.find((q) => t >= q.a && t < q.b) || null;
+    if (c !== shown) { shown = c; cap.hidden = !c; cap.innerHTML = c ? esc(c.text).replace(/&lt;b&gt;(.*?)&lt;\/b&gt;/g, '<b>$1</b>') : ''; }
+    bar.style.transform = `scaleX(${v.duration ? t / v.duration : 0})`;
+  });
+  v.addEventListener('loadeddata', () => { box.append(cap, bar, snd); label(); }, { once: true });
+  const sec = (s) => s.split(':').reduce((n, p) => n * 60 + parseFloat(p.replace(',', '.')), 0);
+  if (box.dataset.vtt) fetch(box.dataset.vtt).then((r) => (r.ok ? r.text() : '')).then((txt) => {
+    cues = txt.replace(/\r/g, '').split(/\n{2,}/).map((block) => {
+      const lines = block.split('\n'), i = lines.findIndex((l) => l.includes('-->'));
+      if (i < 0) return null;
+      const [a, b] = lines[i].split('-->').map((s) => sec(s.trim().split(/\s+/)[0]));
+      return { a, b, text: lines.slice(i + 1).join('\n') };
+    }).filter(Boolean);
+  }).catch(() => {});
+}
+// hiện dần khi cuộn tới
+const reveal = new IntersectionObserver((list) => {
+  for (const e of list) if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target); }
+}, { threshold: 0.12 });
+document.querySelectorAll('.rv').forEach((el) => reveal.observe(el));
 
 // ---- analytics: the funnel visit -> download -> checkout -> QR -> paid, sent to whichever trackers are configured
 if (CONFIG.metaPixel) {
