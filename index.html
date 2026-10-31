@@ -178,6 +178,40 @@ section .sub { text-align: center; color: var(--muted); max-width: 640px; margin
 .install h3 { margin: 0 0 6px; font-size: 17px; }
 .install p { margin: 0; color: var(--muted); font-size: 15px; }
 .install b { color: var(--text); }
+/* what to click when the browser or SmartScreen warns about the unsigned installer */
+.warn-guide { margin: 36px auto 0; max-width: 980px; text-align: left; scroll-margin-top: 80px; border-radius: 18px; transition: box-shadow .4s; }
+.warn-guide.flash { box-shadow: 0 0 0 3px var(--warn); }
+.wg-title { text-align: center; font-size: 22px; margin: 0 0 6px; }
+.wg-why { text-align: center; color: var(--muted); max-width: 680px; margin: 0 auto 18px; font-size: 15px; }
+.wg-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+@media (max-width: 860px) { .wg-grid { grid-template-columns: 1fr; } }
+.wg-head { font-weight: 800; font-size: 17px; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.wg-head small { flex-basis: 100%; font-weight: 400; font-size: 13px; color: var(--muted); }
+.wg-n { width: 28px; height: 28px; border-radius: 50%; background: var(--warn); color: var(--accent-ink); display: grid; place-items: center; font-size: 15px; }
+.wg-steps { margin: 14px 0 0; padding-left: 20px; display: flex; flex-direction: column; gap: 14px; color: var(--muted); font-size: 15px; }
+.wg-steps b { color: var(--text); }
+/* light mock-ups of the Windows dialogs; .hl marks what to click */
+.mock { margin-top: 10px; border-radius: 10px; padding: 12px 14px; font: 13px/1.4 "Segoe UI", system-ui, sans-serif; max-width: 400px; }
+.mock .hl { outline: 3px solid var(--warn); outline-offset: 2px; border-radius: 4px; animation: hl 1.6s ease-in-out infinite; }
+@keyframes hl { 50% { outline-color: rgba(245, 185, 66, .3); } }
+.mock.win { background: #f3f3f3; color: #1b1b1b; }
+.mk-h { font-weight: 600; font-size: 14px; margin-bottom: 8px; }
+.mk-row { display: flex; gap: 8px; align-items: flex-start; background: #fff; border-radius: 6px; padding: 8px; }
+.mk-shield { color: #c27c0e; }
+.mk-txt { flex: 1; }
+.mk-dots { padding: 0 6px; font-weight: 700; }
+.mk-menu { margin: 6px 0 0 auto; width: 190px; background: #fff; border-radius: 6px; box-shadow: 0 4px 14px rgba(0,0,0,.15); padding: 4px; }
+.mk-menu div { padding: 5px 8px; }
+.mk-title { font-weight: 600; margin-bottom: 8px; }
+.mk-more { margin: 6px 0; }
+.mk-link { color: #0067c0; text-decoration: underline; padding: 0 2px; }
+.mk-btns, .ss-btns { display: flex; justify-content: flex-end; gap: 8px; margin-top: 10px; }
+.mk-btns span { background: #fff; border: 1px solid #ccc; border-radius: 4px; padding: 4px 14px; }
+.mock.ss { background: #0f5ea8; color: #fff; }
+.ss-t { font-size: 18px; font-weight: 300; margin-bottom: 6px; }
+.ss-p { margin: 6px 0; }
+.ss-link { text-decoration: underline; padding: 0 2px; }
+.ss-btns span { border: 2px solid #fff; padding: 4px 14px; }
 .needs { max-width: 760px; margin: 22px auto 0; font-size: 15px; display: flex; flex-direction: column; gap: 4px; }
 footer { border-top: 1px solid var(--line); padding: 28px 0 90px; color: var(--muted); font-size: 14px; }
 footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space-between; }
@@ -394,7 +428,7 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
         <details><summary>Hết tháng thì sao?</summary><p>App về gói Miễn phí, dự án và file của bạn vẫn còn nguyên. Gia hạn bằng key cũ là app tự mở lại gói, không cần cài lại. Khách mua giá ra mắt giữ nguyên giá khi gia hạn cùng gói.</p></details>
         <details><summary>Làm cover, remix bằng app có bị dính bản quyền không?</summary><p>App giúp nhạc và lời của bạn qua được bộ lọc bản quyền của Suno, để bạn cover, remix, làm beat thoải mái. Nhưng bản quyền lời và giai điệu của bài gốc vẫn thuộc về tác giả. Nếu đăng bản cover lên YouTube, TikTok, Spotify để kiếm tiền, bạn vẫn có thể bị hệ thống nhận diện nội dung (như Content ID) phát hiện. Khi phát hành thương mại, hãy xin phép tác giả hoặc dùng bài đã được cấp phép.</p></details>
         <details><summary>App có làm mất credit Suno của tôi không?</summary><p>App chỉ làm những việc bạn vẫn làm tay (đăng file, chỉnh nhịp, lưu, tải WAV). Phần tạo bài cover bạn vẫn tự bấm trên Suno.</p></details>
-        <details><summary>Windows báo "Windows protected your PC" khi cài?</summary><p>Đây là cảnh báo thường gặp với app mới. Bấm "More info" rồi "Run anyway" để cài.</p></details>
+        <details><summary>Trình duyệt hoặc Windows cảnh báo khi tải, cài?</summary><p>Đây là cảnh báo thường gặp với app mới. Trình duyệt báo "isn't commonly downloaded": bấm dấu ··· ở dòng file, chọn Keep, rồi Show more, Keep anyway. Windows báo "Windows protected your PC": bấm More info rồi Run anyway.</p></details>
       </div>
     </div>
   </section>
@@ -421,10 +455,58 @@ footer .wrap { display: flex; gap: 16px; flex-wrap: wrap; justify-content: space
 
       <ol class="install">
         <li class="card"><h3>Tải bộ cài</h3><p>Bấm <b>Tải bộ cài</b> ở trên. File <b>XuongCoverAI-Setup.exe</b> (khoảng 100 MB) về thư mục Downloads.</p></li>
-        <li class="card"><h3>Mở file để cài</h3><p>Nếu Windows hiện <b>"Windows protected your PC"</b>: bấm <b>More info</b> (Thông tin thêm) rồi <b>Run anyway</b> (Vẫn chạy). Cảnh báo này hiện với mọi app mới.</p></li>
+        <li class="card"><h3>Mở file để cài</h3><p>Trình duyệt hoặc Windows hiện cảnh báo? Bình thường với app mới. Làm theo <a href="#canh-bao">hướng dẫn có hình bên dưới</a>, mất chừng 10 giây.</p></li>
         <li class="card"><h3>Mở app từ Desktop</h3><p>Cài xong, biểu tượng <b>Xưởng Cover AI</b> có sẵn trên màn hình Desktop và trong menu Start. Bấm đúp để mở.</p></li>
         <li class="card"><h3>Đăng nhập Suno</h3><p>App mở Chrome để bạn đăng nhập tài khoản Suno một lần. Xong là tạo dự án và làm bài ngay.</p></li>
       </ol>
+
+      <div class="warn-guide" id="canh-bao">
+        <h3 class="wg-title">Gặp cảnh báo khi tải hoặc cài? Làm thế này</h3>
+        <p class="wg-why">App mới phát hành nên Windows và trình duyệt chưa "quen" file này và hiện cảnh báo, giống mọi phần mềm mới. File tải từ trang này là bản chính thức, an toàn.</p>
+        <div class="wg-grid">
+          <div class="card wg">
+            <div class="wg-head"><span class="wg-n">A</span> Trình duyệt giữ file lại<small>"isn't commonly downloaded", "Không thường được tải xuống"</small></div>
+            <ol class="wg-steps">
+              <li>Bấm biểu tượng <b>Tải xuống</b> ở góc trên bên phải, rê chuột vào dòng file, bấm dấu <b>···</b> rồi chọn <b>Keep</b> (Giữ lại).
+                <div class="mock win" aria-hidden="true">
+                  <div class="mk-h">Downloads</div>
+                  <div class="mk-row"><span class="mk-shield">⚠</span><span class="mk-txt">XuongCoverAI-Setup.exe isn't commonly downloaded. Make sure you trust it before you open it.</span><span class="mk-dots hl">···</span></div>
+                  <div class="mk-menu"><div>🗑 Delete</div><div class="hl">Keep</div><div>Report this file as safe</div></div>
+                </div>
+              </li>
+              <li>Bảng hỏi lại hiện ra: bấm <b>Show more</b> (Hiển thị thêm) rồi <b>Keep anyway</b> (Vẫn giữ lại).
+                <div class="mock win" aria-hidden="true">
+                  <div class="mk-title">Make sure you trust XuongCoverAI-Setup.exe before you open it</div>
+                  <div class="mk-more"><span class="hl">Show more ▾</span></div>
+                  <div class="mk-more"><span class="mk-link hl">Keep anyway</span></div>
+                  <div class="mk-btns"><span>Delete</span><span>Cancel</span></div>
+                </div>
+              </li>
+              <li>Dùng Chrome thì bấm <b>Keep</b> hoặc <b>Download suspicious file</b> (Vẫn tải xuống) trong khung tải xuống.</li>
+            </ol>
+          </div>
+          <div class="card wg">
+            <div class="wg-head"><span class="wg-n">B</span> Windows hiện màn hình xanh<small>"Windows protected your PC", "Windows đã bảo vệ PC của bạn"</small></div>
+            <ol class="wg-steps">
+              <li>Bấm dòng chữ <b>More info</b> (Thông tin thêm).
+                <div class="mock ss" aria-hidden="true">
+                  <div class="ss-t">Windows protected your PC</div>
+                  <div class="ss-p">Microsoft Defender SmartScreen prevented an unrecognized app from starting.</div>
+                  <div class="ss-p"><span class="ss-link hl">More info</span></div>
+                  <div class="ss-btns"><span>Don't run</span></div>
+                </div>
+              </li>
+              <li>Bấm nút <b>Run anyway</b> (Vẫn chạy). Bộ cài chạy và app tự mở khi cài xong.
+                <div class="mock ss" aria-hidden="true">
+                  <div class="ss-t">Windows protected your PC</div>
+                  <div class="ss-p">App: XuongCoverAI-Setup.exe<br>Publisher: Unknown publisher</div>
+                  <div class="ss-btns"><span class="hl">Run anyway</span><span>Don't run</span></div>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </div>
 
       <div class="needs">
         <div><b>Máy cần có:</b> Windows 10/11 64-bit · <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> · mạng ổn định · tài khoản Suno.</div>
@@ -645,7 +727,12 @@ if (CONFIG.zalo) {
 document.addEventListener('click', (e) => {
   const a = e.target.closest('[data-download], [data-zalo]');
   if (a?.hasAttribute('data-zalo')) track('zalo');
-  else if (a && a.href.endsWith('.exe')) track('download');
+  else if (a && a.href.endsWith('.exe')) {
+    track('download');
+    // the browser holds an unsigned installer back: point at the guide while the download runs
+    const g = $('#canh-bao');
+    setTimeout(() => { g.scrollIntoView({ behavior: 'smooth', block: 'start' }); g.classList.add('flash'); setTimeout(() => g.classList.remove('flash'), 3000); }, 600);
+  }
 });
 
 drawPlans();
