@@ -609,7 +609,8 @@ for (const box of document.querySelectorAll('.media[data-src]')) {
     v.append(Object.assign(document.createElement('source'), { src, onerror: fallback }));
     box.append(v);
     if (box.hasAttribute('data-player')) player(box, v);
-    new IntersectionObserver(([e]) => { if (e.isIntersecting) v.play().catch(() => {}); else v.pause(); }, { threshold: 0.25 }).observe(box);
+    // thẻ tính năng đang xếp chồng: chỉ thẻ trên cùng được phát, do khối xếp chồng phía dưới quyết định
+    new IntersectionObserver(([e]) => { if (!e.isIntersecting) v.pause(); else if (!v.closest('.stacking')) v.play().catch(() => {}); }, { threshold: 0.25 }).observe(box);
   };
   const near = new IntersectionObserver(([e]) => { if (e.isIntersecting) { near.disconnect(); load(); } }, { rootMargin: '600px 0px' });
   near.observe(box);
@@ -671,26 +672,34 @@ const lenis = window.Lenis ? new Lenis({ autoRaf: true, anchors: true, lerp: 0.0
   let top = 0, gap = 0, h = 0, last = [];
   const layout = () => { top = parseFloat(getComputedStyle(cards[0]).top) || 0; gap = parseFloat(getComputedStyle(box).rowGap) || 0; h = cards[0].offsetHeight; };
   const update = () => {
+    box.classList.toggle('stacking', on.matches);
     if (!on.matches) { cards.forEach((c, i) => { c.style.transform = ''; veils[i].style.opacity = ''; }); last = []; return; }
     // thẻ thứ i nằm tự nhiên ở boxTop + i*(cao + gap); tiến độ 0 khi còn cách chỗ dính (cao + gap), 1 khi chạm.
     // Đo từ khung chứa, không đo từng thẻ, để transform của thẻ không làm lệch phép đo.
-    const boxTop = box.getBoundingClientRect().top;
-    let d = 0;
+    const r = box.getBoundingClientRect();
+    let d = 0, front = 0;
     for (let i = cards.length - 1; i >= 0; i--) {
       const k = Math.min(d, 2); // sâu quá 2 lớp thì giữ nguyên, để mép thẻ không lấn lên header
       if (last[i] !== k) {
         last[i] = k;
         cards[i].style.transform = k ? `translate3d(0, ${(-14 * k).toFixed(2)}px, 0) scale(${(1 - 0.045 * k).toFixed(4)})` : '';
         veils[i].style.opacity = (Math.min(k, 1.5) * 0.4).toFixed(3);
-        // thẻ đã bị phủ kín: dừng video bên dưới cho máy yếu đỡ phải giải mã 5 video cùng lúc
-        const v = cards[i].querySelector('video');
-        if (v) { if (k > 0.98) { if (!v.paused) { v.pause(); v.dataset.held = '1'; } } else if (v.dataset.held) { delete v.dataset.held; v.play().catch(() => {}); } }
       }
-      d += ease(Math.min(1, Math.max(0, 1 - (boxTop + i * (h + gap) - top) / (h + gap))));
+      const p = Math.min(1, Math.max(0, 1 - (r.top + i * (h + gap) - top) / (h + gap)));
+      if (!front && p >= 0.5) front = i; // thẻ trên cùng: thẻ sau nhất đã trượt lên quá nửa đường
+      d += ease(p);
     }
+    // Chỉ phát video của thẻ trên cùng: phát 3 video 720p cùng lúc làm trang tụt còn ~30 khung hình/giây khi cuộn.
+    const seen = r.top < innerHeight && r.bottom > 0;
+    cards.forEach((c, i) => {
+      const v = c.querySelector('video');
+      if (!v) return;
+      if (seen && i === front) { if (v.paused) v.play().catch(() => {}); } else if (!v.paused) v.pause();
+    });
   };
   layout();
   if (lenis) lenis.on('scroll', update); else addEventListener('scroll', update, { passive: true });
+  box.addEventListener('loadeddata', update, true); // video tải chậm hơn lúc cuộn tới: tải xong thì xét lại xem có phát không
   addEventListener('resize', () => { layout(); update(); });
   on.addEventListener('change', () => { layout(); update(); });
   update();
