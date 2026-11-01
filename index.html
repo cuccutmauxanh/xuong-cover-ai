@@ -6,10 +6,10 @@
 <title>Xưởng Cover AI · Hết lỗi bản quyền khi cover nhạc trên Suno AI</title>
 <meta name="description" content="Suno chặn bản quyền khi tải nhạc và lời lên? Xưởng Cover AI phân rã âm thanh, xếp lại lời theo chuẩn Suno và tự đăng hàng trăm bài. Bạn chỉ chọn phong cách cover, remix, beat. Dùng thử miễn phí 10 bài.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://cuccutmauxanh.github.io/xuong-cover-ai/">
+<meta property="og:url" content="https://xuongcoverai.pro.vn/">
 <meta property="og:title" content="Suno chặn bản quyền? Cover hàng trăm bài vẫn lên trơn tru">
 <meta property="og:description" content="Xưởng Cover AI phân rã âm thanh, xếp lại lời theo chuẩn Suno và tự đăng hàng loạt. Bạn chỉ chọn phong cách và nhận bài. Dùng thử miễn phí 10 bài.">
-<meta property="og:image" content="https://cuccutmauxanh.github.io/xuong-cover-ai/og.png">
+<meta property="og:image" content="https://xuongcoverai.pro.vn/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -115,6 +115,16 @@ h2 .dim { color: var(--muted); }
 .chip.bad { color: var(--danger); background: rgba(255, 107, 107, .08); }
 .chip.ok { color: var(--accent); background: var(--accent-bg); }
 .feat .fine { margin-top: 14px; font-size: 13px; }
+/* xếp chồng khi cuộn (như recordly.dev): thẻ dính dưới header, thẻ sau trượt lên che thẻ trước,
+   thẻ bị che thu nhỏ, tối đi và lộ mép phía trên như một xấp bài. --d do JS tính theo vị trí cuộn. */
+@media (min-width: 861px) and (min-height: 640px) {
+  .features.stack { display: grid; grid-auto-rows: 1fr; gap: 64px; }
+  .features.stack .feat { position: sticky; top: 112px; transform-origin: 50% 0;
+    transform: translateY(calc(var(--d, 0) * -14px)) scale(calc(1 - var(--d, 0) * .045)); transition: opacity .6s ease; will-change: transform;
+    box-shadow: 0 -1px 0 rgba(255, 255, 255, .06), 0 -24px 48px rgba(0, 0, 0, .5); }
+  .features.stack .feat::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: #000; pointer-events: none;
+    opacity: calc(min(var(--d, 0), 1.5) * .4); }
+}
 @media (max-width: 860px) {
   .feat { grid-template-columns: 1fr; }
   .feat.flip .media { order: 0; }
@@ -331,7 +341,7 @@ footer .legal a { color: var(--muted); }
     <div class="wrap">
       <div class="features">
         <div class="feat rv">
-          <div class="media" data-src="media/phan-ra.mp4" data-label="Thả nhạc hoặc playlist YouTube, app phân rã rồi đăng lên Suno"></div>
+          <div class="media" data-src="media/phan-ra.mp4" data-poster="media/phan-ra.jpg" data-label="Thả nhạc hoặc playlist YouTube, app phân rã rồi đăng lên Suno"></div>
           <div class="txt">
             <div class="eyebrow">Lớp chặn 1 · File nhạc</div>
             <h2>Phân rã âm thanh, qua kiểm tra bản quyền</h2>
@@ -340,7 +350,7 @@ footer .legal a { color: var(--muted); }
           </div>
         </div>
         <div class="feat flip rv">
-          <div class="media" data-src="media/loi.mp4" data-label="Tìm lời, xếp lại theo chuẩn Suno, copy một nút"></div>
+          <div class="media" data-src="media/loi.mp4" data-poster="media/loi.jpg" data-label="Tìm lời, xếp lại theo chuẩn Suno, copy một nút"></div>
           <div class="txt">
             <div class="eyebrow">Lớp chặn 2 · Lời bài hát</div>
             <h2>Lời bài hát xếp lại theo chuẩn Suno</h2>
@@ -349,7 +359,7 @@ footer .legal a { color: var(--muted); }
           </div>
         </div>
         <div class="feat rv">
-          <div class="media" data-src="media/hang-loat.mp4" data-label="Danh sách nhiều bài chạy song song, bài xong đánh dấu ✓"></div>
+          <div class="media" data-src="media/hang-loat.mp4" data-poster="media/hang-loat.jpg" data-label="Danh sách nhiều bài chạy song song, bài xong đánh dấu ✓"></div>
           <div class="txt">
             <div class="eyebrow">Tự động</div>
             <h2>15 bài chạy cùng lúc, để máy tự làm</h2>
@@ -357,7 +367,7 @@ footer .legal a { color: var(--muted); }
           </div>
         </div>
         <div class="feat flip rv">
-          <div class="media" data-src="media/phong-cach.mp4" data-label="Chọn phong cách trong thư viện, bấm Cover ngay"></div>
+          <div class="media" data-src="media/phong-cach.mp4" data-poster="media/phong-cach.jpg" data-label="Chọn phong cách trong thư viện, bấm Cover ngay"></div>
           <div class="txt">
             <div class="eyebrow">Phong cách</div>
             <h2>1.779 phong cách có sẵn, Cover ngay một nút</h2>
@@ -365,7 +375,7 @@ footer .legal a { color: var(--muted); }
           </div>
         </div>
         <div class="feat rv">
-          <div class="media" data-src="media/wav.mp4" data-label="Chọn nhiều bài, tải WAV hàng loạt về máy"></div>
+          <div class="media" data-src="media/wav.mp4" data-poster="media/wav.jpg" data-label="Chọn nhiều bài, tải WAV hàng loạt về máy"></div>
           <div class="txt">
             <div class="eyebrow">Tải về</div>
             <h2>Tải WAV hàng loạt, không tốn hạn mức</h2>
@@ -456,7 +466,7 @@ footer .legal a { color: var(--muted); }
       <div class="note muted" id="dlNote" style="margin-top:12px;font-size:14px">Đang xem trên điện thoại? Hãy mở trang này trên máy tính để tải app.</div>
       <div class="topc" id="toPc" hidden>
         <p>App chạy trên máy tính Windows. Gửi link này sang máy tính để tải sau:</p>
-        <div class="cta"><button class="btn pri" id="shareBtn">📤 Gửi link qua Zalo, Messenger…</button><button class="btn" data-copy="https://cuccutmauxanh.github.io/xuong-cover-ai/">Copy link</button></div>
+        <div class="cta"><button class="btn pri" id="shareBtn">📤 Gửi link qua Zalo, Messenger…</button><button class="btn" data-copy="https://xuongcoverai.pro.vn/">Copy link</button></div>
       </div>
 
       <ol class="install">
@@ -637,6 +647,52 @@ const reveal = new IntersectionObserver((list) => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.rv').forEach((el) => reveal.observe(el));
 
+// ---- 5 thẻ tính năng xếp chồng khi cuộn. Mỗi thẻ có --d = tổng mức "bị che" bởi các thẻ phía sau
+// (0 = chưa bị che, 1 = thẻ ngay sau đã phủ kín, 2 = thêm một thẻ nữa...). CSS dùng --d để thu nhỏ và làm tối.
+{
+  const box = document.querySelector('.features');
+  const cards = [...box.querySelectorAll('.feat')];
+  const on = matchMedia('(min-width: 861px) and (min-height: 640px)');
+  box.classList.add('stack');
+  const ease = (t) => t * t * (3 - 2 * t); // vào chậm, ra chậm
+  const target = cards.map(() => 0), cur = cards.map(() => 0);
+  // mục tiêu --d theo vị trí cuộn. Tính từ bố cục của khung (không bị transform của thẻ làm lệch):
+  // thẻ thứ i nằm tự nhiên ở boxTop + i*(cao + gap); mức phủ 0 khi còn cách chỗ dính một khoảng (cao + gap), 1 khi chạm.
+  const measure = () => {
+    const top = parseFloat(getComputedStyle(cards[0]).top), gap = parseFloat(getComputedStyle(box).rowGap);
+    const h = cards[0].offsetHeight, boxTop = box.getBoundingClientRect().top;
+    const p = cards.map((c, i) => ease(Math.min(1, Math.max(0, 1 - (boxTop + i * (h + gap) - top) / (h + gap)))));
+    // sâu quá 2 lớp thì giữ nguyên, để mép thẻ không lấn lên header
+    let d = 0;
+    for (let i = cards.length - 1; i >= 0; i--) { target[i] = Math.min(d, 2); d += p[i]; }
+  };
+  // --d đuổi theo mục tiêu với độ trễ ~90ms nên cuộn bằng con lăn chuột (giật từng nấc) vẫn thấy trơn
+  let raf = 0, last = 0;
+  const tick = (now) => {
+    const k = 1 - Math.exp(-(Math.min(now - last, 64) || 16) / 90);
+    last = now;
+    let moving = false;
+    cards.forEach((c, i) => {
+      cur[i] += (target[i] - cur[i]) * k;
+      if (Math.abs(target[i] - cur[i]) < 0.001) cur[i] = target[i]; else moving = true;
+      c.style.setProperty('--d', cur[i].toFixed(4));
+      // thẻ đã bị phủ kín: dừng video bên dưới cho máy yếu đỡ phải giải mã 5 video cùng lúc
+      const v = c.querySelector('video');
+      if (v) { if (cur[i] > 0.98) { if (!v.paused) { v.pause(); v.dataset.held = '1'; } } else if (v.dataset.held) { delete v.dataset.held; v.play().catch(() => {}); } }
+    });
+    raf = moving ? requestAnimationFrame(tick) : 0;
+  };
+  const ask = () => {
+    if (!on.matches) { cards.forEach((c, i) => { cur[i] = target[i] = 0; c.style.removeProperty('--d'); }); return; }
+    measure();
+    if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
+  };
+  addEventListener('scroll', ask, { passive: true });
+  addEventListener('resize', ask);
+  on.addEventListener('change', ask);
+  ask();
+}
+
 // ---- analytics: the funnel visit -> download -> checkout -> QR -> paid, sent to whichever trackers are configured
 if (CONFIG.metaPixel) {
   !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
@@ -788,7 +844,7 @@ fetch('https://api.github.com/repos/cuccutmauxanh/xuong-cover-ai/releases/latest
   if (exe) $('#dlMeta').textContent = `Phiên bản ${rel.tag_name.replace(/^v/, '')} · ${Math.round(exe.size / 1048576)} MB · Windows 10/11 · 64-bit`;
 }).catch(() => {});
 $('#shareBtn').onclick = async () => {
-  const url = 'https://cuccutmauxanh.github.io/xuong-cover-ai/';
+  const url = 'https://xuongcoverai.pro.vn/';
   track('share');
   try { await navigator.share({ title: 'Xưởng Cover AI', text: 'Link tải Xưởng Cover AI cho máy tính', url }); }
   catch (e) { if (e.name !== 'AbortError') $('#toPc [data-copy]').click(); } // no share sheet (desktop browsers): copy instead
