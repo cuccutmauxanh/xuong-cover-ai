@@ -92,7 +92,8 @@ header .side .btn { padding: 11px 16px; font-size: 15px; }
 .proof { padding: 80px 20px 40px; text-align: center; }
 .proof > p { margin: 0 0 22px; font-size: 20px; color: var(--muted); }
 .proof .row { display: flex; justify-content: center; gap: clamp(28px, 7vw, 88px); flex-wrap: wrap; }
-.proof b { display: block; font-size: 34px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; }
+.proof b { display: block; font-size: 34px; font-weight: 700; letter-spacing: -0.03em; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.proof i { font-style: normal; }
 .proof span { display: block; max-width: 210px; margin-top: 6px; font-size: 14px; color: var(--muted); line-height: 1.35; text-wrap: balance; }
 
 section { padding: 64px 0; }
@@ -335,9 +336,9 @@ footer .legal a { color: var(--muted); }
   <div class="proof rv">
     <p>Kết quả một lần chạy thật</p>
     <div class="row">
-      <div><b>236/247</b><span>bài qua kiểm tra bản quyền của Suno</span></div>
-      <div><b>15 bài</b><span>xử lý cùng lúc, để máy chạy không cần canh</span></div>
-      <div><b>1.779</b><span>phong cách cover và beat có sẵn</span></div>
+      <div><b><i data-count="236">236</i>/<i data-count="247">247</i></b><span>bài qua kiểm tra bản quyền của Suno</span></div>
+      <div><b><i data-count="500">500</i> bài</b><span>hát trong 1 lần chạy, để máy tự làm không cần canh</span></div>
+      <div><b><i data-count="1779">1.779</i></b><span>phong cách cover và beat có sẵn</span></div>
     </div>
   </div>
 
@@ -652,6 +653,24 @@ const reveal = new IntersectionObserver((list) => {
   for (const e of list) if (e.isIntersecting) { e.target.classList.add('in'); reveal.unobserve(e.target); }
 }, { threshold: 0.12 });
 document.querySelectorAll('.rv').forEach((el) => reveal.observe(el));
+
+// ---- số liệu dưới video chính đếm từ 0 lên khi cuộn tới (1,4 giây, chậm dần về cuối). Số viết kiểu Việt: 1.779
+{
+  const fmt = (n) => n.toLocaleString('vi-VN');
+  const run = (el) => {
+    const end = +el.dataset.count, t0 = performance.now(), dur = 1400;
+    const step = (t) => {
+      const k = Math.min(1, (t - t0) / dur);
+      el.textContent = fmt(Math.round(end * (1 - Math.pow(1 - k, 4))));
+      if (k < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
+  const io = new IntersectionObserver((list) => {
+    for (const e of list) if (e.isIntersecting) { io.unobserve(e.target); e.target.querySelectorAll('[data-count]').forEach(run); }
+  }, { threshold: 0.5 });
+  document.querySelectorAll('.proof').forEach((el) => { el.querySelectorAll('[data-count]').forEach((n) => { n.textContent = '0'; }); io.observe(el); });
+}
 
 // ---- cuộn mượt như recordly.dev: Lenis cho trang trôi theo con lăn chuột thay vì nhảy từng nấc 100px.
 // Không theo cài đặt "giảm hiệu ứng" của Windows vì nhiều máy (nhất là quán net) bật sẵn; cảm ứng vẫn cuộn gốc.
