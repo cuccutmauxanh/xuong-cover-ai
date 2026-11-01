@@ -116,15 +116,19 @@ h2 .dim { color: var(--muted); }
 .chip.ok { color: var(--accent); background: var(--accent-bg); }
 .feat .fine { margin-top: 14px; font-size: 13px; }
 /* xếp chồng khi cuộn (như recordly.dev): thẻ dính dưới header, thẻ sau trượt lên che thẻ trước,
-   thẻ bị che thu nhỏ, tối đi và lộ mép phía trên như một xấp bài. --d do JS tính theo vị trí cuộn. */
+   thẻ bị che thu nhỏ, tối đi và lộ mép phía trên như một xấp bài. transform và lớp tối .veil do JS đặt theo vị trí cuộn. */
 @media (min-width: 861px) and (min-height: 640px) {
   .features.stack { display: grid; grid-auto-rows: 1fr; gap: 64px; }
-  .features.stack .feat { position: sticky; top: 112px; transform-origin: 50% 0;
-    transform: translateY(calc(var(--d, 0) * -14px)) scale(calc(1 - var(--d, 0) * .045)); transition: opacity .6s ease; will-change: transform;
+  .js .features.stack .feat { position: sticky; top: 112px; transform-origin: 50% 0; transform: none; transition: opacity .6s ease; will-change: transform;
     box-shadow: 0 -1px 0 rgba(255, 255, 255, .06), 0 -24px 48px rgba(0, 0, 0, .5); }
-  .features.stack .feat::after { content: ''; position: absolute; inset: 0; border-radius: inherit; background: #000; pointer-events: none;
-    opacity: calc(min(var(--d, 0), 1.5) * .4); }
 }
+.feat { position: relative; }
+.feat .veil { position: absolute; inset: 0; z-index: 2; border-radius: inherit; background: #000; opacity: 0; pointer-events: none; will-change: opacity; }
+/* cuộn mượt kiểu recordly.dev (thư viện Lenis, vendor/lenis.min.js): tắt cuộn mượt sẵn của trình duyệt để hai cái không giành nhau */
+html.lenis, html.lenis body { height: auto; }
+html.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: clip; }
 @media (max-width: 860px) {
   .feat { grid-template-columns: 1fr; }
   .feat.flip .media { order: 0; }
@@ -553,6 +557,7 @@ footer .legal a { color: var(--muted); }
 <div class="mbar"><a class="btn" href="#bang-gia">Bảng giá</a><a class="btn pri" href="#tai-ve">Dùng thử miễn phí</a></div>
 
 <div class="ov" id="ov" role="dialog" aria-modal="true"><div class="box" id="box"></div></div>
+<script src="vendor/lenis.min.js"></script>
 
 <script>
 // ---- Cấu hình: sửa ở đây ----------------------------------------------------------------
@@ -647,50 +652,48 @@ const reveal = new IntersectionObserver((list) => {
 }, { threshold: 0.12 });
 document.querySelectorAll('.rv').forEach((el) => reveal.observe(el));
 
-// ---- 5 thẻ tính năng xếp chồng khi cuộn. Mỗi thẻ có --d = tổng mức "bị che" bởi các thẻ phía sau
-// (0 = chưa bị che, 1 = thẻ ngay sau đã phủ kín, 2 = thêm một thẻ nữa...). CSS dùng --d để thu nhỏ và làm tối.
+// ---- cuộn mượt như recordly.dev: Lenis cho trang trôi theo con lăn chuột thay vì nhảy từng nấc 100px.
+// Không theo cài đặt "giảm hiệu ứng" của Windows vì nhiều máy (nhất là quán net) bật sẵn; cảm ứng vẫn cuộn gốc.
+// Hộp thoại #ov tự cuộn bên trong nên đánh dấu data-lenis-prevent.
+$('#ov')?.setAttribute('data-lenis-prevent', '');
+const lenis = window.Lenis ? new Lenis({ autoRaf: true, anchors: true, lerp: 0.09 }) : null;
+
+// ---- 5 thẻ tính năng xếp chồng khi cuộn. Mức "bị che" d của mỗi thẻ = tổng tiến độ các thẻ phía sau đang trượt lên
+// (0 = chưa bị che, 1 = thẻ ngay sau đã phủ kín, 2 = thêm một thẻ nữa). Tính lại mỗi khung hình cuộn, đặt thẳng
+// transform + độ tối, không làm trễ thêm: độ mượt đến từ Lenis nên thẻ luôn khớp đúng vị trí cuộn.
 {
   const box = document.querySelector('.features');
   const cards = [...box.querySelectorAll('.feat')];
+  const veils = cards.map((c) => c.appendChild(Object.assign(document.createElement('i'), { className: 'veil' })));
   const on = matchMedia('(min-width: 861px) and (min-height: 640px)');
   box.classList.add('stack');
-  const ease = (t) => t * t * (3 - 2 * t); // vào chậm, ra chậm
-  const target = cards.map(() => 0), cur = cards.map(() => 0);
-  // mục tiêu --d theo vị trí cuộn. Tính từ bố cục của khung (không bị transform của thẻ làm lệch):
-  // thẻ thứ i nằm tự nhiên ở boxTop + i*(cao + gap); mức phủ 0 khi còn cách chỗ dính một khoảng (cao + gap), 1 khi chạm.
-  const measure = () => {
-    const top = parseFloat(getComputedStyle(cards[0]).top), gap = parseFloat(getComputedStyle(box).rowGap);
-    const h = cards[0].offsetHeight, boxTop = box.getBoundingClientRect().top;
-    const p = cards.map((c, i) => ease(Math.min(1, Math.max(0, 1 - (boxTop + i * (h + gap) - top) / (h + gap)))));
-    // sâu quá 2 lớp thì giữ nguyên, để mép thẻ không lấn lên header
+  const ease = (t) => t * t * (3 - 2 * t);
+  let top = 0, gap = 0, h = 0, last = [];
+  const layout = () => { top = parseFloat(getComputedStyle(cards[0]).top) || 0; gap = parseFloat(getComputedStyle(box).rowGap) || 0; h = cards[0].offsetHeight; };
+  const update = () => {
+    if (!on.matches) { cards.forEach((c, i) => { c.style.transform = ''; veils[i].style.opacity = ''; }); last = []; return; }
+    // thẻ thứ i nằm tự nhiên ở boxTop + i*(cao + gap); tiến độ 0 khi còn cách chỗ dính (cao + gap), 1 khi chạm.
+    // Đo từ khung chứa, không đo từng thẻ, để transform của thẻ không làm lệch phép đo.
+    const boxTop = box.getBoundingClientRect().top;
     let d = 0;
-    for (let i = cards.length - 1; i >= 0; i--) { target[i] = Math.min(d, 2); d += p[i]; }
+    for (let i = cards.length - 1; i >= 0; i--) {
+      const k = Math.min(d, 2); // sâu quá 2 lớp thì giữ nguyên, để mép thẻ không lấn lên header
+      if (last[i] !== k) {
+        last[i] = k;
+        cards[i].style.transform = k ? `translate3d(0, ${(-14 * k).toFixed(2)}px, 0) scale(${(1 - 0.045 * k).toFixed(4)})` : '';
+        veils[i].style.opacity = (Math.min(k, 1.5) * 0.4).toFixed(3);
+        // thẻ đã bị phủ kín: dừng video bên dưới cho máy yếu đỡ phải giải mã 5 video cùng lúc
+        const v = cards[i].querySelector('video');
+        if (v) { if (k > 0.98) { if (!v.paused) { v.pause(); v.dataset.held = '1'; } } else if (v.dataset.held) { delete v.dataset.held; v.play().catch(() => {}); } }
+      }
+      d += ease(Math.min(1, Math.max(0, 1 - (boxTop + i * (h + gap) - top) / (h + gap))));
+    }
   };
-  // --d đuổi theo mục tiêu với độ trễ ~90ms nên cuộn bằng con lăn chuột (giật từng nấc) vẫn thấy trơn
-  let raf = 0, last = 0;
-  const tick = (now) => {
-    const k = 1 - Math.exp(-(Math.min(now - last, 64) || 16) / 90);
-    last = now;
-    let moving = false;
-    cards.forEach((c, i) => {
-      cur[i] += (target[i] - cur[i]) * k;
-      if (Math.abs(target[i] - cur[i]) < 0.001) cur[i] = target[i]; else moving = true;
-      c.style.setProperty('--d', cur[i].toFixed(4));
-      // thẻ đã bị phủ kín: dừng video bên dưới cho máy yếu đỡ phải giải mã 5 video cùng lúc
-      const v = c.querySelector('video');
-      if (v) { if (cur[i] > 0.98) { if (!v.paused) { v.pause(); v.dataset.held = '1'; } } else if (v.dataset.held) { delete v.dataset.held; v.play().catch(() => {}); } }
-    });
-    raf = moving ? requestAnimationFrame(tick) : 0;
-  };
-  const ask = () => {
-    if (!on.matches) { cards.forEach((c, i) => { cur[i] = target[i] = 0; c.style.removeProperty('--d'); }); return; }
-    measure();
-    if (!raf) { last = performance.now(); raf = requestAnimationFrame(tick); }
-  };
-  addEventListener('scroll', ask, { passive: true });
-  addEventListener('resize', ask);
-  on.addEventListener('change', ask);
-  ask();
+  layout();
+  if (lenis) lenis.on('scroll', update); else addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', () => { layout(); update(); });
+  on.addEventListener('change', () => { layout(); update(); });
+  update();
 }
 
 // ---- analytics: the funnel visit -> download -> checkout -> QR -> paid, sent to whichever trackers are configured
@@ -868,7 +871,7 @@ document.addEventListener('click', (e) => {
     track('download');
     // the browser holds an unsigned installer back: point at the guide while the download runs
     const g = $('#canh-bao');
-    setTimeout(() => { g.scrollIntoView({ behavior: 'smooth', block: 'start' }); g.classList.add('flash'); setTimeout(() => g.classList.remove('flash'), 3000); }, 600);
+    setTimeout(() => { if (lenis) lenis.scrollTo(g, { offset: -90 }); else g.scrollIntoView({ behavior: 'smooth', block: 'start' }); g.classList.add('flash'); setTimeout(() => g.classList.remove('flash'), 3000); }, 600);
   }
 });
 
