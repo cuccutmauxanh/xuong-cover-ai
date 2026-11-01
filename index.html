@@ -384,7 +384,7 @@ footer .legal a { color: var(--muted); }
             <div class="eyebrow">Tải về</div>
             <h2>Tải WAV hàng loạt, không tốn hạn mức</h2>
             <p>WAV chất lượng cao 48 kHz tải qua Suno Studio, không tính vào hạn mức tải WAV hàng tháng của Suno. Lọc nhanh bài chưa tải, bài đã thích, tìm tên bài không cần gõ dấu.</p>
-            <p class="fine muted">Tải hàng loạt có từ gói Chuyên nghiệp. Gói Cá nhân tải từng bài.</p>
+            <p class="fine muted">Tải hàng loạt có từ gói Chuyên nghiệp, gói Cá nhân tải từng bài. Mỗi tháng: Cá nhân tải 500 bài, Chuyên nghiệp 1.000 bài, Xưởng không giới hạn.</p>
           </div>
         </div>
       </div>
@@ -443,6 +443,7 @@ footer .legal a { color: var(--muted); }
         <details><summary>Bản miễn phí có giới hạn gì?</summary><p>Đủ mọi tính năng, làm được 10 bài, mỗi lúc 2 bài trên Suno. Đủ để bạn thấy app làm được gì trước khi mua.</p></details>
         <details><summary>Mua xong nhận key thế nào?</summary><p>Quét QR chuyển khoản đúng số tiền và nội dung. Hệ thống tự nhận tiền, key hiện ra ngay trên trang (thường dưới 1 phút). Mở app › Cài đặt › nhập key là xong.</p></details>
         <details><summary>Một key dùng được mấy máy?</summary><p>Gói Cá nhân và Chuyên nghiệp: 1 máy. Gói Xưởng: 2 máy. Đổi máy thì bấm "Gỡ key khỏi máy này" trên máy cũ rồi nhập key ở máy mới.</p></details>
+        <details><summary>Mỗi gói làm được bao nhiêu bài?</summary><p>Mỗi tháng, gói Cá nhân đăng 500 bài lên Suno và tải 500 bài WAV. Gói Chuyên nghiệp đăng 1.000 bài và tải 1.000 bài. Gói Xưởng không giới hạn. Một bài làm lại hay tải lại trong tháng chỉ tính một lần. Hết lượt thì đợi tháng mới hoặc nâng cấp gói.</p></details>
         <details><summary>Hết tháng thì sao?</summary><p>App về gói Miễn phí, dự án và file của bạn vẫn còn nguyên. Gia hạn bằng key cũ là app tự mở lại gói, không cần cài lại. Khách mua giá ra mắt giữ nguyên giá khi gia hạn cùng gói.</p></details>
         <details><summary>Làm cover, remix bằng app có bị dính bản quyền không?</summary><p>App giúp nhạc và lời của bạn qua được bộ lọc bản quyền của Suno, để bạn cover, remix, làm beat thoải mái. Nhưng bản quyền lời và giai điệu của bài gốc vẫn thuộc về tác giả. Nếu đăng bản cover lên YouTube, TikTok, Spotify để kiếm tiền, bạn vẫn có thể bị hệ thống nhận diện nội dung (như Content ID) phát hiện. Khi phát hành thương mại, hãy xin phép tác giả hoặc dùng bài đã được cấp phép.</p></details>
         <details><summary>App có làm mất credit Suno của tôi không?</summary><p>App chỉ làm những việc bạn vẫn làm tay (đăng file, chỉnh nhịp, lưu, tải WAV). Phần tạo bài cover bạn vẫn tự bấm trên Suno.</p></details>
@@ -572,8 +573,8 @@ const CONFIG = {
 // Tính năng từng gói: giống src/plans.js của app.
 const WHO = { basic: 'Cho người làm cover một mình', pro: 'Cho người làm cover nhiều, mỗi ngày', max: 'Cho xưởng làm số lượng lớn' };
 const FEATS = {
-  basic: [['3 bài chạy cùng lúc', 1], ['Không giới hạn số bài', 1], ['Tải WAV từng bài', 1], ['Link playlist YouTube', 0], ['Tự tìm lời bài hát', 0], ['Tải WAV hàng loạt', 0]],
-  pro: [['8 bài chạy cùng lúc', 1], ['Không giới hạn số bài', 1], ['Tải WAV 3 bài cùng lúc', 1], ['Link playlist YouTube', 1], ['Tự tìm lời bài hát', 1], ['Tải WAV hàng loạt', 1]],
+  basic: [['3 bài chạy cùng lúc', 1], ['500 bài mỗi tháng', 1], ['Tải WAV 500 bài mỗi tháng, từng bài', 1], ['Link playlist YouTube', 0], ['Tự tìm lời bài hát', 0], ['Tải WAV hàng loạt', 0]],
+  pro: [['8 bài chạy cùng lúc', 1], ['1.000 bài mỗi tháng', 1], ['Tải WAV 1.000 bài mỗi tháng, 3 bài cùng lúc', 1], ['Link playlist YouTube', 1], ['Tự tìm lời bài hát', 1], ['Tải WAV hàng loạt', 1]],
   max: [['15 bài chạy cùng lúc', 1], ['Không giới hạn số bài', 1], ['Tải WAV 5 bài cùng lúc', 1], ['Link playlist YouTube', 1], ['Tự tìm lời bài hát', 1], ['Dùng trên 2 máy', 1]],
 };
 // ------------------------------------------------------------------------------------------
