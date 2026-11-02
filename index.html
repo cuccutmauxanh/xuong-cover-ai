@@ -560,7 +560,7 @@ footer .legal a { color: var(--muted); }
       </div>
 
       <div class="needs">
-        <div><b>Máy cần có:</b> Windows 10/11 64-bit · <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> · mạng ổn định · tài khoản Suno.</div>
+        <div><b>Máy cần có:</b> Windows 10/11 64-bit · <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> · mạng ổn định · tài khoản Suno Premier.</div>
         <span class="muted">Cài không được? Bấm nút Zalo ở góc màn hình để được hướng dẫn.</span>
       </div>
     </div>
@@ -986,7 +986,7 @@ try {
 } catch { /* private browsing may block storage */ }
 function downloadForm() {
   $('#box').innerHTML = `<button class="x" type="button" onclick="closeBox()" aria-label="Đóng">×</button>
-    <h3 id="leadTitle">Tải Xưởng Cover AI miễn phí</h3>
+    <h3 id="leadTitle">Tải Xưởng Cover AI miễn phí</h3><div class="muted" style="font-size:13px">Bước 1/2 · Thông tin liên hệ</div>
     <p class="muted">Để lại thông tin để chúng tôi hỗ trợ bạn cài đặt và sử dụng.</p>
     <form id="leadForm">
       <label class="field">Họ và tên<input name="name" autocomplete="name" maxlength="80" required></label>
@@ -994,7 +994,7 @@ function downloadForm() {
       <label class="field">Số điện thoại / Zalo<input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" required></label>
       <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px"><input name="marketing" type="checkbox"> Tôi đồng ý nhận thông tin sản phẩm và ưu đãi qua email hoặc điện thoại (không bắt buộc).</label>
       <p class="muted" style="font-size:12px">Bằng cách tiếp tục, bạn đồng ý cho chúng tôi sử dụng thông tin để hỗ trợ theo <a href="chinh-sach.html#bao-mat" target="_blank" rel="noopener">chính sách bảo mật</a>.</p>
-      <div class="err" id="leadErr" role="alert"></div><button class="btn pri big" style="width:100%" type="submit">Gửi thông tin và tải bộ cài</button>
+      <div class="err" id="leadErr" role="alert"></div><button class="btn pri big" style="width:100%" type="submit">Tiếp theo</button>
     </form>`;
   $('#ov').setAttribute('aria-labelledby', 'leadTitle');
   $('#ov').classList.add('on');
@@ -1011,12 +1011,33 @@ function downloadForm() {
           marketing: form.elements.marketing.checked, first_campaign: first, last_campaign: last }) });
       const result = await response.json();
       if (!response.ok || !result.ok) throw new Error(result.error || 'Không thể lưu thông tin. Vui lòng thử lại.');
-      track('download'); closeBox();
-      const link = document.createElement('a'); link.href = CONFIG.downloadUrl; link.rel = 'noopener'; document.body.appendChild(link); link.click(); link.remove();
-      const guide = $('#canh-bao');
-      setTimeout(() => { if (lenis) lenis.scrollTo(guide, { offset: -90 }); else guide.scrollIntoView({ behavior: 'smooth', block: 'start' }); guide.classList.add('flash'); setTimeout(() => guide.classList.remove('flash'), 3000); }, 600);
+      track('download');
+      if (form.isConnected && $('#ov').classList.contains('on')) downloadRequirements();
     } catch (e) { error.textContent = e.message || 'Không kết nối được. Vui lòng thử lại.'; button.disabled = false; }
   };
+}
+function downloadRequirements() {
+  $('#box').innerHTML = `<button class="x" type="button" onclick="closeBox()" aria-label="Đóng">×</button>
+    <h3 id="leadTitle">Xác nhận trước khi tải</h3><div class="muted" style="font-size:13px">Bước 2/2 · Điều kiện sử dụng</div>
+    <p class="muted">Vui lòng xác nhận cả hai điều kiện để tải bộ cài.</p>
+    <form id="requirementsForm">
+      <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0"><input type="checkbox" name="windows" required> <span>Tôi sử dụng máy tính Windows 10 hoặc 11, 64-bit.</span></label>
+      <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0 6px"><input type="checkbox" name="premier" required> <span>Tôi đã có tài khoản Suno với gói <b>Premier</b> đang hoạt động.</span></label>
+      <p class="muted" style="font-size:12px;margin:0 0 20px 24px">Gói Premier: 30 USD/tháng khi thanh toán theo tháng; giá và thuế do Suno quyết định. <a href="https://suno.com/pricing" target="_blank" rel="noopener noreferrer">Mua tài khoản Suno ngay ↗</a></p>
+      <button class="btn pri big" id="requirementsDownload" style="width:100%" type="submit" disabled>Tải bộ cài</button>
+    </form>`;
+  const form = $('#requirementsForm'), button = $('#requirementsDownload');
+  const update = () => { button.disabled = !(form.elements.windows.checked && form.elements.premier.checked); };
+  form.addEventListener('change', update);
+  form.onsubmit = (event) => {
+    event.preventDefault();
+    if (!form.elements.windows.checked || !form.elements.premier.checked) return;
+    closeBox();
+    const link = document.createElement('a'); link.href = CONFIG.downloadUrl; link.rel = 'noopener'; document.body.appendChild(link); link.click(); link.remove();
+    const guide = $('#canh-bao');
+    setTimeout(() => { if (lenis) lenis.scrollTo(guide, { offset: -90 }); else guide.scrollIntoView({ behavior: 'smooth', block: 'start' }); guide.classList.add('flash'); setTimeout(() => guide.classList.remove('flash'), 3000); }, 600);
+  };
+  form.elements.windows.focus();
 }
 document.addEventListener('click', (e) => {
   const a = e.target.closest('[data-download], [data-zalo]');
