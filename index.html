@@ -179,6 +179,17 @@ html.lenis.lenis-smooth { scroll-behavior: auto !important; }
 .guarantee { display: table; margin: -14px auto 32px; padding: 10px 16px; border-radius: 10px; background: var(--accent-bg); font-size: 15px; text-align: center; }
 .price-note { text-align: center; color: var(--muted); font-size: 14px; line-height: 1.55; max-width: 800px; margin: 22px auto 0; }
 .price-note b { color: var(--text); font-weight: 600; }
+/* mua thêm lượt */
+.addons { max-width: 800px; margin: 36px auto 0; text-align: center; }
+.addons h3 { margin: 0 0 6px; font-size: 22px; letter-spacing: -0.02em; }
+.addons > p { margin: 0 auto 18px; color: var(--muted); font-size: 15px; max-width: 620px; }
+.addon-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 560px) { .addon-row { grid-template-columns: 1fr; } }
+.addon { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.addon b { font-size: 18px; }
+.addon .price { font-size: 26px; }
+.addon .per { font-size: 13px; color: var(--muted); }
+.addon .btn { width: 100%; margin-top: 8px; }
 .topc p { color: var(--muted); margin: 18px 0 12px; }
 
 /* hỏi đáp: tiêu đề trái, danh sách phải */
@@ -442,6 +453,11 @@ footer .legal a { color: var(--muted); }
       <div class="price-note"><b>Giá ra mắt</b>: giá gạch ngang là giá thường sẽ áp dụng sau giai đoạn ra mắt. <b>Mua trong giai đoạn ra mắt, bạn giữ giá này mỗi lần gia hạn</b> (cùng gói), dù sau này giá bán tăng.<br>
         Credit Suno do Suno tính riêng trên tài khoản của bạn. Đã có key? Gia hạn bằng nút bên dưới.<br>
         <button class="btn" style="margin-top:14px" onclick="checkout('', true)">Gia hạn key</button></div>
+      <div class="addons" id="addons" hidden>
+        <h3>Hết lượt giữa tháng? Mua thêm lượt</h3>
+        <p>Cho key Cá nhân và Chuyên nghiệp. Mỗi bài gồm 1 lượt đăng lên Suno và 1 lượt tải WAV. <b>Lượt mua thêm không mất khi sang tháng mới</b>, chỉ được dùng sau khi hết số bài của gói trong tháng.</p>
+        <div class="addon-row" id="addonRow"></div>
+      </div>
     </div>
   </section>
 
@@ -457,7 +473,7 @@ footer .legal a { color: var(--muted); }
         <details><summary>Bản miễn phí có giới hạn gì?</summary><p>Đủ mọi tính năng, làm được 10 bài, mỗi lúc 2 bài trên Suno. Đủ để bạn thấy app làm được gì trước khi mua.</p></details>
         <details><summary>Mua xong nhận key thế nào?</summary><p>Quét QR chuyển khoản đúng số tiền và nội dung. Hệ thống tự nhận tiền, key hiện ra ngay trên trang (thường dưới 1 phút). Mở app › Cài đặt › nhập key là xong.</p></details>
         <details><summary>Một key dùng được mấy máy?</summary><p>Gói Cá nhân và Chuyên nghiệp: 1 máy. Gói Xưởng: 2 máy. Đổi máy thì bấm "Gỡ key khỏi máy này" trên máy cũ rồi nhập key ở máy mới.</p></details>
-        <details><summary>Mỗi gói làm được bao nhiêu bài?</summary><p>Mỗi tháng, gói Cá nhân đăng 500 bài lên Suno và tải 500 bài WAV. Gói Chuyên nghiệp đăng 1.000 bài và tải 1.000 bài. Gói Xưởng không giới hạn. Một bài làm lại hay tải lại trong tháng chỉ tính một lần. Hết lượt thì đợi tháng mới hoặc nâng cấp gói.</p></details>
+        <details><summary>Mỗi gói làm được bao nhiêu bài?</summary><p>Mỗi tháng, gói Cá nhân đăng 500 bài lên Suno và tải 500 bài WAV. Gói Chuyên nghiệp đăng 1.000 bài và tải 1.000 bài. Gói Xưởng không giới hạn. Một bài làm lại hay tải lại trong tháng chỉ tính một lần. Hết lượt thì mua thêm lượt (từ 39.000đ cho 100 bài, không mất khi sang tháng mới), nâng cấp gói, hoặc đợi tháng mới.</p></details>
         <details><summary>Hết tháng thì sao?</summary><p>App về gói Miễn phí, dự án và file của bạn vẫn còn nguyên. Gia hạn bằng key cũ là app tự mở lại gói, không cần cài lại. Khách mua giá ra mắt giữ nguyên giá khi gia hạn cùng gói.</p></details>
         <details><summary>Làm cover, remix bằng app có bị dính bản quyền không?</summary><p>App giúp nhạc và lời của bạn qua được bộ lọc bản quyền của Suno, để bạn cover, remix, làm beat thoải mái. Nhưng bản quyền lời và giai điệu của bài gốc vẫn thuộc về tác giả. Nếu đăng bản cover lên YouTube, TikTok, Spotify để kiếm tiền, bạn vẫn có thể bị hệ thống nhận diện nội dung (như Content ID) phát hiện. Khi phát hành thương mại, hãy xin phép tác giả hoặc dùng bài đã được cấp phép.</p></details>
         <details><summary>App có làm mất credit Suno của tôi không?</summary><p>App chỉ làm những việc bạn vẫn làm tay (đăng file, chỉnh nhịp, lưu, tải WAV). Phần tạo bài cover bạn vẫn tự bấm trên Suno.</p></details>
@@ -600,7 +616,7 @@ const api = async (body) => {
   const r = await fetch(CONFIG.shopApi, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
   return r.json();
 };
-let prices = [];
+let prices = [], addons = [];
 
 // ---- video quay màn hình: chỉ tải khi sắp cuộn tới, chỉ phát khi đang nhìn thấy (như recordly.dev)
 // .mp4/.webm thành <video> lặp, không tiếng; .gif thành <img>. Thiếu file: hiện ảnh poster, không có poster thì hiện khung ghi chú.
@@ -778,6 +794,50 @@ function drawPlans() {
     <button class="btn ${p.tier === CONFIG.hot ? 'pri' : ''}" onclick="checkout('${p.tier}')">Mua ${esc(p.name)}</button></div>`;
   }).join('');
   $('#plans').innerHTML = free + (paid || '<div class="card plan muted">Đang tải bảng giá…</div>');
+  $('#addons').hidden = !addons.length;
+  $('#addonRow').innerHTML = addons.map((a) => `<div class="card addon"><b>${esc(a.name)}</b>
+    <div class="price">${vnd(a.amount)}</div><div class="per">≈ ${vnd(Math.round(a.amount / a.songs))} mỗi bài</div>
+    <button class="btn" onclick="buyAddon('${esc(a.id)}')">Mua thêm</button></div>`).join('');
+}
+
+// ---- add-on songs for a key: key + contact -> QR -> wait for the payment -> done
+function buyAddon(id) {
+  const a = addons.find((x) => x.id === id);
+  if (!a) return;
+  track('checkout', { content_name: id, addon: true });
+  $('#box').innerHTML = `<button class="x" onclick="closeBox()" aria-label="Đóng">×</button>
+    <h3>Mua thêm lượt</h3><div class="muted" style="font-size:14px">Lượt được cộng vào key ngay khi tiền về, không đổi hạn dùng của key.</div>
+    <label class="field">Gói thêm lượt<select id="aId">${addons.map((x) => `<option value="${x.id}"${x.id === id ? ' selected' : ''}>${esc(x.name)} · ${vnd(x.amount)}</option>`).join('')}</select></label>
+    <label class="field">Key đang dùng<input id="cKey" placeholder="XCA-XXXX-XXXX-XXXX-XXXX" autocomplete="off"></label><div class="quote" id="cQuote"></div>
+    <label class="field">Tên của bạn<input id="cName" autocomplete="name"></label>
+    <label class="field">Số điện thoại / Zalo (hoặc email)<input id="cContact" autocomplete="tel" inputmode="tel"></label>
+    <div class="err" id="cErr"></div>
+    <button class="btn pri big" style="width:100%" id="cGo">Tạo mã QR thanh toán</button>`;
+  $('#ov').classList.add('on');
+  let seq = 0;
+  $('#cKey').addEventListener('input', async () => { // say at once whether this key can get add-on songs
+    const key = $('#cKey').value.trim(), box = $('#cQuote'), mine = ++seq;
+    box.className = 'quote';
+    if (!/^XCA/i.test(key) || key.replace(/[^A-Za-z0-9]/g, '').length < 12) { box.textContent = ''; return; }
+    try {
+      const q = await api({ action: 'addonKey', key });
+      if (mine !== seq) return;
+      const plan = prices.find((p) => p.tier === q.plan);
+      box.className = `quote ${q.ok ? 'good' : 'bad'}`;
+      box.textContent = q.ok ? `Key gói ${plan ? plan.name : q.plan}: được mua thêm lượt.` : q.error;
+    } catch { /* the order step says it again */ }
+  });
+  $('#cGo').onclick = async () => {
+    const body = { action: 'order', addon: $('#aId').value, customer: $('#cName').value, contact: $('#cContact').value, renewKey: $('#cKey').value };
+    if (!/^XCA/i.test(body.renewKey.trim())) { $('#cErr').textContent = 'Hãy nhập key đang dùng (bắt đầu bằng XCA).'; return; }
+    $('#cGo').disabled = true;
+    $('#cErr').textContent = '';
+    try {
+      const r = await api(body);
+      if (!r.ok) { $('#cErr').textContent = r.error; $('#cGo').disabled = false; return; }
+      showPay(r, 'addon');
+    } catch { $('#cErr').textContent = 'Không kết nối được, hãy thử lại.'; $('#cGo').disabled = false; }
+  };
 }
 
 // ---- checkout: plan + contact -> QR -> wait for the payment -> the key
@@ -861,6 +921,12 @@ function showPay(o, renew) {
 }
 
 function showKey(key, renew) {
+  if (renew === 'addon') {
+    $('#box').innerHTML = `<button class="x" onclick="closeBox()" aria-label="Đóng">×</button>
+      <h3>Đã cộng lượt ✓</h3>
+      <div class="muted" style="font-size:14px">Lượt mua thêm đã vào key <b>${esc(key)}</b>. App sẽ tự nhận trong vài phút (hoặc mở Cài đặt › Kiểm tra lại key). Khi hết số bài của gói trong tháng, app tự dùng lượt mua thêm.</div>`;
+    return;
+  }
   $('#box').innerHTML = `<button class="x" onclick="closeBox()" aria-label="Đóng">×</button>
     <h3>${renew ? 'Đã gia hạn ✓' : 'Thanh toán thành công ✓'}</h3>
     <div class="muted" style="font-size:14px">${renew ? 'Key của bạn đã được gia hạn thêm 1 tháng. App sẽ tự nhận trong vài phút (hoặc mở Cài đặt › Kiểm tra lại key).' : 'Đây là key của bạn. Hãy lưu lại (chụp màn hình).'}</div>
@@ -918,7 +984,7 @@ document.addEventListener('click', (e) => {
 });
 
 drawPlans();
-api({ action: 'prices' }).then((r) => { if (r.ok) { prices = r.prices; drawPlans(); } }).catch(() => {});
+api({ action: 'prices' }).then((r) => { if (r.ok) { prices = r.prices; addons = r.addons || []; drawPlans(); } }).catch(() => {});
 </script>
 </body>
 </html>
