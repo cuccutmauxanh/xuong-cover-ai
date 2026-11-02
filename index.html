@@ -594,6 +594,8 @@ footer .legal a { color: var(--muted); }
 // ---- Cấu hình: sửa ở đây ----------------------------------------------------------------
 const CONFIG = {
   shopApi: 'https://xoqzxbqxctxjdnymbaep.supabase.co/functions/v1/shop',
+  leadApi: 'https://xoqzxbqxctxjdnymbaep.supabase.co/functions/v1/lead',
+  leadKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvcXp4YnF4Y3R4amRueW1iYWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwODUwMDgsImV4cCI6MjEwODY2MTAwOH0.ppGMK0v5P91RVHTe_agh9nVm8WQSsuZVwhU6GO9OPic', // public anon key; database access remains protected by RLS
   downloadUrl: 'https://github.com/cuccutmauxanh/xuong-cover-ai/releases/latest/download/XuongCoverAI-Setup.exe',
   zalo: '0943242867',         // số điện thoại / Zalo hỗ trợ
   hot: 'pro',                 // gói gắn nhãn "Được chọn nhiều nhất"
@@ -770,8 +772,8 @@ if (CONFIG.ga4) {
   gtag('config', CONFIG.ga4);
 }
 const EVENTS = { // our name: [Meta standard event, GA4 event]
-  download: ['Lead', 'download'], checkout: ['InitiateCheckout', 'begin_checkout'], qr: ['AddPaymentInfo', 'add_payment_info'],
-  paid: ['Purchase', 'purchase'], zalo: ['Contact', 'contact'], share: ['Lead', 'share'], // share: a phone visitor sends the link to their PC
+  download: ['Lead', 'generate_lead'], checkout: ['InitiateCheckout', 'begin_checkout'], qr: ['AddPaymentInfo', 'add_payment_info'],
+  paid: ['Purchase', 'purchase'], zalo: ['Contact', 'contact'], share: ['Contact', 'share'],
 };
 const track = (name, params = {}) => {
   const [fb, ga] = EVENTS[name];
@@ -842,7 +844,7 @@ function buyAddon(id) {
 
 // ---- checkout: plan + contact -> QR -> wait for the payment -> the key
 let poll = null;
-const closeBox = () => { $('#ov').classList.remove('on'); clearInterval(poll); };
+const closeBox = () => { $('#ov').classList.remove('on'); $('#ov').removeAttribute('aria-labelledby'); clearInterval(poll); };
 $('#ov').addEventListener('mousedown', (e) => { if (e.target.id === 'ov') closeBox(); });
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeBox(); });
 
@@ -944,7 +946,7 @@ document.addEventListener('click', async (e) => {
 // download links: the installer, or the section with the note when it is not out yet / on a phone
 const phone = /Android|iPhone|iPad/i.test(navigator.userAgent);
 for (const a of document.querySelectorAll('[data-download]')) {
-  if (CONFIG.downloadUrl && !phone) { a.href = CONFIG.downloadUrl; a.removeAttribute('target'); } else a.href = '#tai-ve';
+  a.href = '#tai-ve';
 }
 if (!phone) { if (CONFIG.downloadUrl) $('#dlNote').remove(); else $('#dlNote').textContent = 'Bộ cài sắp có. Hãy quay lại sau.'; }
 $('#toPc').hidden = !phone;
@@ -972,15 +974,54 @@ if (CONFIG.zalo) {
   $('#contact').innerHTML = `Hỗ trợ: gọi <a href="tel:${esc(CONFIG.zalo)}">${pretty(esc(CONFIG.zalo))}</a> hoặc nhắn <a href="https://zalo.me/${esc(CONFIG.zalo)}" data-zalo>Zalo</a>`;
   document.body.insertAdjacentHTML('beforeend', `<a class="zalo" href="https://zalo.me/${esc(CONFIG.zalo)}" target="_blank" rel="noopener" data-zalo aria-label="Nhắn Zalo hỗ trợ">Zalo</a>`);
 }
+// Chỉ lưu thông số chiến dịch được chọn, không lưu URL có thể chứa thông tin cá nhân.
+const campaignKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term'];
+try {
+  const q = new URLSearchParams(location.search), campaign = {};
+  campaignKeys.forEach((key) => { const value = q.get(key); if (value) campaign[key] = value.slice(0, 120); });
+  if (Object.keys(campaign).length) {
+    if (!sessionStorage.getItem('xca_first_campaign')) sessionStorage.setItem('xca_first_campaign', JSON.stringify(campaign));
+    sessionStorage.setItem('xca_last_campaign', JSON.stringify(campaign));
+  }
+} catch { /* private browsing may block storage */ }
+function downloadForm() {
+  $('#box').innerHTML = `<button class="x" type="button" onclick="closeBox()" aria-label="Đóng">×</button>
+    <h3 id="leadTitle">Tải Xưởng Cover AI miễn phí</h3>
+    <p class="muted">Để lại thông tin để chúng tôi hỗ trợ bạn cài đặt và sử dụng.</p>
+    <form id="leadForm">
+      <label class="field">Họ và tên<input name="name" autocomplete="name" maxlength="80" required></label>
+      <label class="field">Email<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+      <label class="field">Số điện thoại / Zalo<input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="20" required></label>
+      <label style="display:flex;gap:8px;align-items:flex-start;font-size:13px"><input name="marketing" type="checkbox"> Tôi đồng ý nhận thông tin sản phẩm và ưu đãi qua email hoặc điện thoại (không bắt buộc).</label>
+      <p class="muted" style="font-size:12px">Bằng cách tiếp tục, bạn đồng ý cho chúng tôi sử dụng thông tin để hỗ trợ theo <a href="chinh-sach.html#bao-mat" target="_blank" rel="noopener">chính sách bảo mật</a>.</p>
+      <div class="err" id="leadErr" role="alert"></div><button class="btn pri big" style="width:100%" type="submit">Gửi thông tin và tải bộ cài</button>
+    </form>`;
+  $('#ov').setAttribute('aria-labelledby', 'leadTitle');
+  $('#ov').classList.add('on');
+  const form = $('#leadForm'); form.elements.name.focus();
+  form.onsubmit = async (event) => {
+    event.preventDefault();
+    const button = form.querySelector('button[type=submit]'), error = $('#leadErr');
+    button.disabled = true; error.textContent = '';
+    let first = {}, last = {};
+    try { first = JSON.parse(sessionStorage.getItem('xca_first_campaign') || '{}'); last = JSON.parse(sessionStorage.getItem('xca_last_campaign') || '{}'); } catch {}
+    try {
+      const response = await fetch(CONFIG.leadApi, { method: 'POST', headers: { 'content-type': 'application/json', apikey: CONFIG.leadKey, authorization: `Bearer ${CONFIG.leadKey}` }, signal: AbortSignal.timeout(15000),
+        body: JSON.stringify({ name: form.elements.name.value, email: form.elements.email.value, phone: form.elements.phone.value,
+          marketing: form.elements.marketing.checked, first_campaign: first, last_campaign: last }) });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Không thể lưu thông tin. Vui lòng thử lại.');
+      track('download'); closeBox();
+      const link = document.createElement('a'); link.href = CONFIG.downloadUrl; link.rel = 'noopener'; document.body.appendChild(link); link.click(); link.remove();
+      const guide = $('#canh-bao');
+      setTimeout(() => { if (lenis) lenis.scrollTo(guide, { offset: -90 }); else guide.scrollIntoView({ behavior: 'smooth', block: 'start' }); guide.classList.add('flash'); setTimeout(() => guide.classList.remove('flash'), 3000); }, 600);
+    } catch (e) { error.textContent = e.message || 'Không kết nối được. Vui lòng thử lại.'; button.disabled = false; }
+  };
+}
 document.addEventListener('click', (e) => {
   const a = e.target.closest('[data-download], [data-zalo]');
   if (a?.hasAttribute('data-zalo')) track('zalo');
-  else if (a && a.href.endsWith('.exe')) {
-    track('download');
-    // the browser holds an unsigned installer back: point at the guide while the download runs
-    const g = $('#canh-bao');
-    setTimeout(() => { if (lenis) lenis.scrollTo(g, { offset: -90 }); else g.scrollIntoView({ behavior: 'smooth', block: 'start' }); g.classList.add('flash'); setTimeout(() => g.classList.remove('flash'), 3000); }, 600);
-  }
+  else if (a && !phone && CONFIG.downloadUrl) { e.preventDefault(); downloadForm(); }
 });
 
 drawPlans();
