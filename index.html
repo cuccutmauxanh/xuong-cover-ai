@@ -597,6 +597,7 @@ const CONFIG = {
   leadApi: 'https://xoqzxbqxctxjdnymbaep.supabase.co/functions/v1/lead',
   leadKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhvcXp4YnF4Y3R4amRueW1iYWVwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTMwODUwMDgsImV4cCI6MjEwODY2MTAwOH0.ppGMK0v5P91RVHTe_agh9nVm8WQSsuZVwhU6GO9OPic', // public anon key; database access remains protected by RLS
   downloadUrl: 'https://github.com/cuccutmauxanh/xuong-cover-ai/releases/latest/download/XuongCoverAI-Setup.exe',
+  telemetryApi: 'https://xoqzxbqxctxjdnymbaep.supabase.co/functions/v1/telemetry', // giống TELEMETRY_API trong src/config.js
   zalo: '0943242867',         // số điện thoại / Zalo hỗ trợ
   hot: 'pro',                 // gói gắn nhãn "Được chọn nhiều nhất"
   metaPixel: '1142950192003337',              // ID Meta Pixel (Trình quản lý sự kiện Facebook), để trống = tắt
@@ -984,6 +985,22 @@ try {
     sessionStorage.setItem('xca_last_campaign', JSON.stringify(campaign));
   }
 } catch { /* private browsing may block storage */ }
+// Đếm lượt bấm tải (ẩn danh, kèm chiến dịch quảng cáo): step 'button' = bấm nút tải, 'installer' = tải bộ cài thật.
+// Gửi bằng sendBeacon nên không chặn việc tải; lỗi thì bỏ qua.
+function downloadClick(step) {
+  try {
+    if (!CONFIG.telemetryApi || !navigator.sendBeacon) return;
+    let id = '';
+    try { id = localStorage.getItem('xca_web_id') || ''; if (!id) { id = Math.random().toString(36).slice(2, 12) + Date.now().toString(36); localStorage.setItem('xca_web_id', id); } } catch { id = Math.random().toString(36).slice(2, 12); }
+    let c = {};
+    try { c = JSON.parse(sessionStorage.getItem('xca_last_campaign') || sessionStorage.getItem('xca_first_campaign') || '{}'); } catch {}
+    const props = {};
+    for (const k of ['utm_source', 'utm_campaign', 'utm_content', 'utm_medium']) if (c[k]) props[k] = String(c[k]).slice(0, 80);
+    const body = { action: 'events', machine: `web:${id}`, version: 'landing', events: [{ name: 'landing_download_click', at: new Date().toISOString(), step, props }] };
+    // text/plain: a simple request, no CORS preflight that a beacon cannot wait for
+    navigator.sendBeacon(CONFIG.telemetryApi, new Blob([JSON.stringify(body)], { type: 'text/plain;charset=UTF-8' }));
+  } catch { /* never stop the download */ }
+}
 function downloadForm() {
   $('#box').innerHTML = `<button class="x" type="button" onclick="closeBox()" aria-label="Đóng">×</button>
     <h3 id="leadTitle">Tải Xưởng Cover AI miễn phí</h3><div class="muted" style="font-size:13px">Bước 1/2 · Thông tin liên hệ</div>
@@ -1033,6 +1050,7 @@ function downloadRequirements() {
     event.preventDefault();
     if (!form.elements.windows.checked || !form.elements.premier.checked) return;
     closeBox();
+    downloadClick('installer');
     const link = document.createElement('a'); link.href = CONFIG.downloadUrl; link.rel = 'noopener'; document.body.appendChild(link); link.click(); link.remove();
     const guide = $('#canh-bao');
     setTimeout(() => { if (lenis) lenis.scrollTo(guide, { offset: -90 }); else guide.scrollIntoView({ behavior: 'smooth', block: 'start' }); guide.classList.add('flash'); setTimeout(() => guide.classList.remove('flash'), 3000); }, 600);
@@ -1042,7 +1060,7 @@ function downloadRequirements() {
 document.addEventListener('click', (e) => {
   const a = e.target.closest('[data-download], [data-zalo]');
   if (a?.hasAttribute('data-zalo')) track('zalo');
-  else if (a && !phone && CONFIG.downloadUrl) { e.preventDefault(); downloadForm(); }
+  else if (a && !phone && CONFIG.downloadUrl) { e.preventDefault(); downloadClick('button'); downloadForm(); }
 });
 
 drawPlans();
