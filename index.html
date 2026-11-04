@@ -341,7 +341,7 @@ footer .legal a { color: var(--muted); }
     <h1><span class="q">Suno chặn bản quyền?</span> Cover hàng trăm bài vẫn lên trơn tru</h1>
     <p class="lead">Xưởng Cover AI phân rã âm thanh, xếp lại lời theo chuẩn Suno và tự đăng hàng loạt. Bạn chỉ việc chọn phong cách cover, remix hay beat rồi nhận bài.</p>
     <div class="cta"><a class="btn pri big" href="#tai-ve" data-download><svg><use href="#i-dl"/></svg>Tải về dùng thử</a></div>
-    <div class="note"><svg><use href="#i-win"/></svg>Windows 10/11 <i>·</i> <b>Bắt buộc tài khoản Suno Premier</b> <i>·</i> 30 bài miễn phí / 30 ngày <i>·</i> Suno Premier thanh toán riêng</div>
+    <div class="note"><svg><use href="#i-win"/></svg>Windows 10/11 <i>·</i> <b>Cần tài khoản Suno Pro hoặc Premier</b> <i>·</i> 30 bài miễn phí / 30 ngày <i>·</i> gói Suno thanh toán riêng</div>
     <!-- Video chính: media/hero.mp4 (quảng cáo v8, có tiếng, chữ in sẵn nên không gắn phụ đề .vtt). Lỗi tải thì hiện ảnh app.png. -->
     <div class="media rv" data-src="media/hero.mp4" data-poster="media/hero.jpg" data-player data-label="Video chính: vấn đề và giải pháp"></div>
   </div>
@@ -469,7 +469,7 @@ footer .legal a { color: var(--muted); }
         <p>Chưa thấy câu bạn cần? Bấm nút Zalo ở góc màn hình để hỏi trực tiếp.</p>
       </div>
       <div class="faq rv">
-        <details><summary>Máy tôi cần gì để chạy?</summary><p>Máy tính Windows 10/11 64-bit, đã cài Google Chrome, có mạng ổn định, và một tài khoản Suno. Bản Mac sẽ có sau.</p></details>
+        <details><summary>Máy tôi cần gì để chạy?</summary><p>Máy tính Windows 10/11 64-bit, đã cài Google Chrome, có mạng ổn định, và một tài khoản Suno gói <b>Pro hoặc Premier</b> (tài khoản Free không dùng được). Bản Mac sẽ có sau: mở trang này trên máy Mac và bấm tải để để lại Gmail, chúng tôi báo bạn đầu tiên.</p></details>
         <details><summary>Bản miễn phí có giới hạn gì?</summary><p>Đủ mọi tính năng, làm được 30 bài mỗi 30 ngày trên mỗi máy, mỗi lúc 2 bài trên Suno. Chu kỳ 30 ngày bắt đầu từ bài đầu tiên; hết lượt thì chờ chu kỳ mới hoặc nâng cấp gói.</p></details>
         <details><summary>Mua xong nhận key thế nào?</summary><p>Quét QR chuyển khoản đúng số tiền và nội dung. Hệ thống tự nhận tiền, key hiện ra ngay trên trang (thường dưới 1 phút). Mở app › Cài đặt › nhập key là xong.</p></details>
         <details><summary>Một key dùng được mấy máy?</summary><p>Gói Cá nhân và Chuyên nghiệp: 1 máy. Gói Xưởng: 2 máy. Đổi máy thì bấm "Gỡ key khỏi máy này" trên máy cũ rồi nhập key ở máy mới.</p></details>
@@ -560,7 +560,7 @@ footer .legal a { color: var(--muted); }
       </div>
 
       <div class="needs">
-        <div><b>Máy cần có:</b> Windows 10/11 64-bit · <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> · mạng ổn định · <b>bắt buộc tài khoản Suno Premier</b> (app tự kiểm tra gói khi đăng nhập; tài khoản Free/Pro không dùng được).</div>
+        <div><b>Máy cần có:</b> Windows 10/11 64-bit · <a href="https://www.google.com/chrome/" target="_blank" rel="noopener">Google Chrome</a> · mạng ổn định · <b>tài khoản Suno Pro hoặc Premier</b> (app tự kiểm tra gói khi đăng nhập; tài khoản Free không dùng được).</div>
         <span class="muted">Cài không được? Bấm nút Zalo ở góc màn hình để được hướng dẫn.</span>
       </div>
     </div>
@@ -945,7 +945,10 @@ document.addEventListener('click', async (e) => {
 });
 
 // download links: the installer, or the section with the note when it is not out yet / on a phone
-const phone = /Android|iPhone|iPad/i.test(navigator.userAgent);
+// iPads ask for the desktop page and say "Macintosh", but have a touch screen: they count as a phone here.
+const phone = /Android|iPhone|iPad/i.test(navigator.userAgent) || (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+const mac = !phone && /Mac/i.test(navigator.userAgentData?.platform || navigator.platform || navigator.userAgent);
+if (mac) { const b = $('#dlBtn'); if (b) b.lastChild.textContent = 'Nhận bản Mac qua Gmail'; }
 for (const a of document.querySelectorAll('[data-download]')) {
   a.href = '#tai-ve';
 }
@@ -1036,30 +1039,79 @@ function downloadForm() {
 function downloadRequirements() {
   $('#box').innerHTML = `<button class="x" type="button" onclick="closeBox()" aria-label="Đóng">×</button>
     <h3 id="leadTitle">Xác nhận trước khi tải</h3><div class="muted" style="font-size:13px">Bước 2/2 · Điều kiện sử dụng</div>
-    <p class="muted">Vui lòng xác nhận cả hai điều kiện để tải bộ cài.</p>
+    <p style="margin:12px 0 4px"><b>Tài khoản Suno của bạn đang dùng gói nào?</b></p>
+    <p class="muted" style="font-size:13px;margin:0 0 8px">Xưởng Cover AI chạy với tài khoản Suno <b>Pro hoặc Premier</b>. Tài khoản <b>Free</b> không đăng được bản phân rã âm thanh lên Suno, cài vào sẽ không dùng được.</p>
     <form id="requirementsForm">
-      <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0"><input type="checkbox" name="windows" required> <span>Tôi sử dụng máy tính Windows 10 hoặc 11, 64-bit.</span></label>
-      <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0 6px"><input type="checkbox" name="premier" required> <span>Tôi đã có tài khoản Suno với gói <b>Premier</b> đang hoạt động.</span></label>
-      <p class="muted" style="font-size:12px;margin:0 0 20px 24px">Gói Premier: 30 USD/tháng khi thanh toán theo tháng; giá và thuế do Suno quyết định. <a href="https://suno.com/pricing" target="_blank" rel="noopener noreferrer">Mua tài khoản Suno ngay ↗</a></p>
+      ${[['premier', 'Premier'], ['pro', 'Pro'], ['free', 'Free (miễn phí)'], ['none', 'Chưa có tài khoản Suno'], ['unsure', 'Không rõ']].map(([v, t]) =>
+        `<label style="display:flex;gap:10px;align-items:center;margin:8px 0"><input type="radio" name="plan" value="${v}" required> <span>${t}</span></label>`).join('')}
+      <div id="planNo" class="muted" style="font-size:13px;margin:12px 0;padding:12px;border-radius:10px;background:var(--card2)" hidden></div>
+      <label id="winRow" style="display:flex;gap:10px;align-items:flex-start;margin:16px 0"><input type="checkbox" name="windows" required> <span>Tôi dùng máy tính Windows 10 hoặc 11, 64-bit, đã cài Google Chrome.</span></label>
       <button class="btn pri big" id="requirementsDownload" style="width:100%" type="submit" disabled>Tải bộ cài</button>
     </form>`;
-  const form = $('#requirementsForm'), button = $('#requirementsDownload');
-  const update = () => { button.disabled = !(form.elements.windows.checked && form.elements.premier.checked); };
+  const form = $('#requirementsForm'), button = $('#requirementsDownload'), no = $('#planNo');
+  const NO_TEXT = {
+    free: 'Tài khoản <b>Free</b> chưa dùng được: cần nâng cấp lên gói <b>Pro</b> hoặc <b>Premier</b> trên Suno.',
+    none: 'Bạn cần một tài khoản Suno gói <b>Pro</b> hoặc <b>Premier</b> trước.',
+    unsure: 'Xem gói của bạn: vào suno.com, bấm ảnh đại diện, chọn <b>Subscription</b>. Nếu ghi <b>Pro</b> hoặc <b>Premier</b> thì quay lại chọn đúng gói.',
+  };
+  let told = '';
+  const update = () => {
+    const plan = form.elements.plan.value, ok = plan === 'premier' || plan === 'pro';
+    if (plan && plan !== told) { told = plan; downloadClick(`plan:${plan}`); } // how many are turned away, and why
+    no.hidden = !plan || ok;
+    if (!ok && plan) no.innerHTML = `${NO_TEXT[plan]} Bạn đã để lại liên hệ, chúng tôi sẽ hỗ trợ khi bạn sẵn sàng.<br><a href="https://suno.com/pricing" target="_blank" rel="noopener noreferrer">Xem gói Pro/Premier trên Suno ↗</a> (giá do Suno quyết định)`;
+    $('#winRow').style.display = ok ? 'flex' : 'none'; // not .hidden: the inline/.btn display would win over it
+    button.style.display = ok ? '' : 'none';
+    button.disabled = !(ok && form.elements.windows.checked);
+  };
   form.addEventListener('change', update);
+  update();
   form.onsubmit = (event) => {
     event.preventDefault();
-    if (!form.elements.windows.checked || !form.elements.premier.checked) return;
+    if (!['premier', 'pro'].includes(form.elements.plan.value) || !form.elements.windows.checked) return;
     closeBox();
     downloadClick('installer');
     const link = document.createElement('a'); link.href = CONFIG.downloadUrl; link.rel = 'noopener'; document.body.appendChild(link); link.click(); link.remove();
     const guide = $('#canh-bao');
     setTimeout(() => { if (lenis) lenis.scrollTo(guide, { offset: -90 }); else guide.scrollIntoView({ behavior: 'smooth', block: 'start' }); guide.classList.add('flash'); setTimeout(() => guide.classList.remove('flash'), 3000); }, 600);
   };
-  form.elements.windows.focus();
+  form.querySelector('input[name=plan]').focus();
+}
+// A Mac: there is no Mac version yet, so instead of the installer the visitor leaves an email to get it first.
+function macForm() {
+  $('#box').innerHTML = `<button class="x" type="button" onclick="closeBox()" aria-label="Đóng">×</button>
+    <h3 id="leadTitle">Bản Mac đang được làm</h3>
+    <p class="muted">Hiện Xưởng Cover AI chỉ chạy trên <b>Windows 10/11</b>. Để lại Gmail, bản Mac ra là chúng tôi gửi bạn đầu tiên.</p>
+    <form id="macLead">
+      <label class="field">Gmail<input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+      <label class="field">Tên (không bắt buộc)<input name="name" autocomplete="name" maxlength="80"></label>
+      <p class="muted" style="font-size:12px">Chỉ dùng để báo khi có bản Mac, theo <a href="chinh-sach.html#bao-mat" target="_blank" rel="noopener">chính sách bảo mật</a>. Có máy Windows? Mở trang này trên máy Windows để tải ngay.</p>
+      <div class="err" id="leadErr" role="alert"></div><button class="btn pri big" style="width:100%" type="submit">Báo tôi khi có bản Mac</button>
+    </form>`;
+  $('#ov').setAttribute('aria-labelledby', 'leadTitle');
+  $('#ov').classList.add('on');
+  const form = $('#macLead'); form.elements.email.focus();
+  form.onsubmit = async (event) => {
+    event.preventDefault();
+    const button = form.querySelector('button[type=submit]'), error = $('#leadErr');
+    button.disabled = true; error.textContent = '';
+    let first = {}, last = {};
+    try { first = JSON.parse(sessionStorage.getItem('xca_first_campaign') || '{}'); last = JSON.parse(sessionStorage.getItem('xca_last_campaign') || '{}'); } catch {}
+    try {
+      const response = await fetch(CONFIG.leadApi, { method: 'POST', headers: { 'content-type': 'application/json', apikey: CONFIG.leadKey, authorization: `Bearer ${CONFIG.leadKey}` }, signal: AbortSignal.timeout(15000),
+        body: JSON.stringify({ kind: 'mac', email: form.elements.email.value, name: form.elements.name.value, first_campaign: first, last_campaign: last }) });
+      const result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.error || 'Không thể lưu thông tin. Vui lòng thử lại.');
+      downloadClick('mac_waitlist');
+      $('#box').innerHTML = `<button class="x" type="button" onclick="closeBox()" aria-label="Đóng">×</button>
+        <h3>Đã ghi nhận ✓</h3><p class="muted">Bản Mac ra là chúng tôi gửi Gmail cho bạn. Cảm ơn bạn đã chờ!</p>`;
+    } catch (e) { error.textContent = e.message || 'Không kết nối được. Vui lòng thử lại.'; button.disabled = false; }
+  };
 }
 document.addEventListener('click', (e) => {
   const a = e.target.closest('[data-download], [data-zalo]');
   if (a?.hasAttribute('data-zalo')) track('zalo');
+  else if (a && mac) { e.preventDefault(); downloadClick('mac'); macForm(); }
   else if (a && !phone && CONFIG.downloadUrl) { e.preventDefault(); downloadClick('button'); downloadForm(); }
 });
 
