@@ -191,6 +191,11 @@ html.lenis.lenis-smooth { scroll-behavior: auto !important; }
 .addon .per { font-size: 13px; color: var(--muted); }
 .addon .btn { width: 100%; margin-top: 8px; }
 .topc p { color: var(--muted); margin: 18px 0 12px; }
+.phone-lead { display: flex; flex-wrap: wrap; gap: 8px; }
+.phone-lead input { flex: 1 1 200px; min-width: 0; font: inherit; font-size: 16px; color: var(--text); background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 12px; }
+.phone-lead input:focus { outline: none; border-color: var(--accent); }
+.phone-lead button { flex: 1 1 100%; justify-content: center; }
+.phone-lead .err { flex-basis: 100%; }
 
 /* hỏi đáp: tiêu đề trái, danh sách phải */
 .faq-wrap { display: grid; grid-template-columns: 1fr 520px; gap: 40px; align-items: start; }
@@ -500,8 +505,14 @@ footer .legal a { color: var(--muted); }
       </div>
       <div class="note muted" id="dlNote" style="margin-top:12px;font-size:14px">Đang xem trên điện thoại? Hãy mở trang này trên máy tính để tải app.</div>
       <div class="topc" id="toPc" hidden>
-        <p>App chạy trên máy tính Windows. Gửi link này sang máy tính để tải sau:</p>
-        <div class="cta"><button class="btn pri" id="shareBtn">📤 Gửi link qua Zalo, Messenger…</button><button class="btn" data-copy="https://xuongcoverai.pro.vn/">Copy link</button></div>
+        <p>App chạy trên máy tính Windows. Để lại Gmail, chúng tôi gửi link tải và hướng dẫn cài để bạn mở trên máy tính:</p>
+        <form id="phoneLead" class="phone-lead">
+          <input name="email" type="email" autocomplete="email" maxlength="254" placeholder="Gmail của bạn" aria-label="Gmail" required>
+          <button class="btn pri" type="submit">Gửi link cho tôi</button>
+          <div class="err" id="phoneErr" role="alert"></div>
+        </form>
+        <p>Hoặc tự gửi link sang máy tính:</p>
+        <div class="cta"><button class="btn" id="shareBtn">📤 Gửi link qua Zalo, Messenger…</button><button class="btn" data-copy="https://xuongcoverai.pro.vn/">Copy link</button></div>
       </div>
 
       <ol class="install">
@@ -960,8 +971,37 @@ fetch('https://api.github.com/repos/cuccutmauxanh/xuong-cover-ai/releases/latest
   const exe = rel?.assets?.find((a) => a.name.endsWith('.exe'));
   if (exe) $('#dlMeta').textContent = `Phiên bản ${rel.tag_name.replace(/^v/, '')} · ${Math.round(exe.size / 1048576)} MB · Windows 10/11 · 64-bit`;
 }).catch(() => {});
+// Nearly every ad visitor is on a phone and finishes on a PC. The link sent to the PC keeps the ad campaign
+// (only the utm_* values, never the full URL), so the Gmail left there later is still counted for the ad.
+function pcLink() {
+  const url = new URL('https://xuongcoverai.pro.vn/'), here = new URLSearchParams(location.search);
+  let c = {};
+  try { c = JSON.parse(sessionStorage.getItem('xca_last_campaign') || sessionStorage.getItem('xca_first_campaign') || '{}'); } catch { /* storage blocked: this page's own address */ }
+  for (const k of ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']) {
+    const v = typeof c[k] === 'string' && c[k] ? c[k] : here.get(k);
+    if (v) url.searchParams.set(k, v.slice(0, 120));
+  }
+  return url.href;
+}
+// On a phone: a Gmail to send the download link to (table phone_leads, kind 'phone'), with the ad campaign.
+$('#phoneLead').onsubmit = async (event) => {
+  event.preventDefault();
+  const form = event.target, button = form.querySelector('button[type=submit]'), error = $('#phoneErr');
+  button.disabled = true; error.textContent = '';
+  let first = {}, last = {};
+  try { first = JSON.parse(sessionStorage.getItem('xca_first_campaign') || '{}'); last = JSON.parse(sessionStorage.getItem('xca_last_campaign') || '{}'); } catch {}
+  try {
+    const response = await fetch(CONFIG.leadApi, { method: 'POST', headers: { 'content-type': 'application/json', apikey: CONFIG.leadKey, authorization: `Bearer ${CONFIG.leadKey}` }, signal: AbortSignal.timeout(15000),
+      body: JSON.stringify({ kind: 'phone', email: form.elements.email.value, first_campaign: first, last_campaign: last }) });
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(result.error || 'Không thể lưu thông tin. Vui lòng thử lại.');
+    downloadClick('phone_gmail');
+    track('download');
+    form.outerHTML = '<p id="phoneDone"><b>Đã ghi nhận ✓</b> Chúng tôi sẽ gửi link tải và hướng dẫn cài vào Gmail của bạn. Mở Gmail trên máy tính Windows để tải.</p>';
+  } catch (e) { error.textContent = e.message || 'Không kết nối được. Vui lòng thử lại.'; button.disabled = false; }
+};
 $('#shareBtn').onclick = async () => {
-  const url = 'https://xuongcoverai.pro.vn/';
+  const url = pcLink();
   track('share');
   try { await navigator.share({ title: 'Xưởng Cover AI', text: 'Link tải Xưởng Cover AI cho máy tính', url }); }
   catch (e) { if (e.name !== 'AbortError') $('#toPc [data-copy]').click(); } // no share sheet (desktop browsers): copy instead
@@ -988,6 +1028,7 @@ try {
     sessionStorage.setItem('xca_last_campaign', JSON.stringify(campaign));
   }
 } catch { /* private browsing may block storage */ }
+if (phone) $('#toPc [data-copy]').dataset.copy = pcLink(); // after the campaign above is stored
 // Đếm lượt bấm tải (ẩn danh, kèm chiến dịch quảng cáo): step 'button' = bấm nút tải, 'installer' = tải bộ cài thật.
 // Gửi bằng sendBeacon nên không chặn việc tải; lỗi thì bỏ qua.
 function downloadClick(step) {
